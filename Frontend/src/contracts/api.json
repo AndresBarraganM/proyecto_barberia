@@ -1,0 +1,208 @@
+{
+  "_descripcion": "Contrato API sistema de barbería",
+
+  "autenticacion": {
+    "login": {
+      "method": "POST",
+      "endpoint": "/auth/login",
+      "body": {
+        "email": "string",
+        "password": "string"
+      },
+      "response": {
+        "token": "string",
+        "rol": "cliente | estilista | recepcionista | admin",
+        "usuario": {
+          "id": "number",
+          "nombre": "string",
+          "email": "string"
+        }
+      }
+    },
+
+    "registro": {
+      "method": "POST",
+      "endpoint": "/auth/register",
+      "body": {
+        "nombre": "string",
+        "email": "string",
+        "password": "string"
+      },
+      "response": {
+        "mensaje": "Usuario creado correctamente"
+      }
+    },
+
+    "recuperarPassword": {
+      "method": "POST",
+      "endpoint": "/auth/recuperar",
+      "body": {
+        "email": "string"
+      },
+      "response": {
+        "mensaje": "Correo enviado"
+      }
+    }
+  },
+
+  "cliente": {
+    "obtenerServicios": {
+      "method": "GET",
+      "endpoint": "/servicios",
+      "response": [
+        {
+          "id": "number",
+          "nombre": "string",
+          "precio": "number",
+          "duracion": "number"
+        }
+      ]
+    },
+
+    "crearCita": {
+      "method": "POST",
+      "endpoint": "/citas",
+      "body": {
+        "servicioId": "number",
+        "fecha": "YYYY-MM-DD",
+        "hora": "HH:mm"
+      },
+      "response": {
+        "mensaje": "Cita creada",
+        "cita": {
+          "id": "number",
+          "fecha": "string",
+          "hora": "string",
+          "servicio": "string",
+          "estilista": "string",
+          "estado": "pendiente | confirmada"
+        }
+      }
+    },
+
+    "obtenerCitas": {
+      "method": "GET",
+      "endpoint": "/citas",
+      "response": [
+        {
+          "id": "number",
+          "fecha": "string",
+          "hora": "string",
+          "servicio": "string",
+          "estilista": "string",
+          "estado": "string"
+        }
+      ]
+    },
+
+    "cancelarCita": {
+      "method": "DELETE",
+      "endpoint": "/citas/{id}",
+      "response": {
+        "mensaje": "Cita cancelada"
+      }
+    }
+  },
+
+  "recepcionista": {
+    "verCitas": {
+      "method": "GET",
+      "endpoint": "/recepcionista/citas",
+      "response": [
+        {
+          "id": "number",
+          "cliente": "string",
+          "fecha": "string",
+          "hora": "string",
+          "servicio": "string",
+          "estado": "string"
+        }
+      ]
+    },
+
+    "asignarEstilista": {
+      "method": "PUT",
+      "endpoint": "/recepcionista/citas/{id}/asignar",
+      "body": {
+        "estilistaId": "number"
+      },
+      "response": {
+        "mensaje": "Estilista asignado"
+      }
+    }
+  },
+
+  "estilista": {
+    "misCitas": {
+      "method": "GET",
+      "endpoint": "/estilista/citas",
+      "response": [
+        {
+          "id": "number",
+          "cliente": "string",
+          "servicio": "string",
+          "fecha": "string",
+          "hora": "string",
+          "estado": "string"
+        }
+      ]
+    },
+
+    "finalizarCita": {
+      "method": "PUT",
+      "endpoint": "/estilista/citas/{id}/finalizar",
+      "response": {
+        "mensaje": "Cita finalizada"
+      }
+    }
+  },
+
+  "admin": {
+    "crearServicio": {
+      "method": "POST",
+      "endpoint": "/admin/servicios",
+      "body": {
+        "nombre": "string",
+        "precio": "number",
+        "duracion": "number"
+      },
+      "response": {
+        "mensaje": "Servicio creado"
+      }
+    },
+
+    "editarServicio": {
+      "method": "PUT",
+      "endpoint": "/admin/servicios/{id}",
+      "body": {
+        "nombre": "string",
+        "precio": "number",
+        "duracion": "number"
+      },
+      "response": {
+        "mensaje": "Servicio actualizado"
+      }
+    },
+
+    "eliminarServicio": {
+      "method": "DELETE",
+      "endpoint": "/admin/servicios/{id}",
+      "response": {
+        "mensaje": "Servicio eliminado"
+      }
+    },
+
+    "verUsuarios": {
+      "method": "GET",
+      "endpoint": "/admin/usuarios",
+      "response": [
+        {
+          "id": "number",
+          "nombre": "string",
+          "email": "string",
+          "rol": "string"
+        }
+      ]
+    }
+  }
+}
