@@ -2,9 +2,11 @@ import { Request } from 'express'
 
 // Payload que se codifica dentro del JWT
 export interface JwtPayload {
-  userId: string
+  sub: string
   email: string
-  role: 'USER' | 'ADMIN'
+  role: 'cliente'| 'estilista'| 'recepcionista'| 'admin'
+  iat: number
+  exp: number
 }
 
 // Extiende Request de Express para incluir el usuario autenticado
@@ -18,4 +20,12 @@ export interface ApiResponse<T = unknown> {
   message: string
   data?: T
   errors?: string[]
+}
+
+// Estructura de un token recuperado de la base de datos
+export interface DatabaseToken {
+  user_id: string
+  ip_address: string
+  user_agent: string
+  revoked_at: number
 }
