@@ -1,5 +1,10 @@
-
 import { createRouter, createWebHistory } from 'vue-router'
+import AdminDashboard from '../views/AdminDashboard.vue'
+import VistaServicios from '../views/VistaServicios.vue'
+import CrearServicio from '../views/CrearServicio.vue'
+import VistaEstilistas from '../views/VistaEstilistas.vue'
+import CrearEstilista from '../views/CrearEstilista.vue'
+import VistaHistorial from '../views/VistaHistorial.vue'
 
 /* ========= SUHEY ========= */
 
@@ -10,7 +15,6 @@ import PaginaPrincipal from '../views/PaginaPrincipal.vue'
 
 // CLIENTE
 // import ClienteHomeView from '../views/cliente/HomeView.vue'
-//
 //
 //
 //
@@ -42,7 +46,6 @@ import PaginaPrincipal from '../views/PaginaPrincipal.vue'
 //
 //
 //
-//
 
 // ESTILISTA
 // import EstilistaView from '../views/estilista/CitasView.vue'
@@ -60,38 +63,14 @@ import PaginaPrincipal from '../views/PaginaPrincipal.vue'
 //
 //
 //
-//
-
-/* ========= ALEXIA ========= */
-
-// ADMIN
-// import AdminDashboardView from '../views/admin/DashboardView.vue'
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 const routes = [
 
   /* ========= SUHEY ========= */
 
   // AUTH
-  { path: '/', component: PaginaPrincipal }
+  { path: '/', component: PaginaPrincipal },
+
   // { path: '/login', component: LoginView },
   // { path: '/registro', component: RegisterView },
   // { path: '/recuperar', component: RecoverView },
@@ -140,11 +119,17 @@ const routes = [
   //
   //
   //
-  
+
   /* ========= ALEXIA ========= */
 
   // ADMIN
-  // { path: '/admin', component: AdminDashboardView },
+  { path: '/admin', component: AdminDashboard },
+  { path: '/admin/servicios', component: VistaServicios },
+  { path: '/admin/servicios/crear', component: CrearServicio },
+  { path: '/admin/estilistas', component: VistaEstilistas },
+  { path: '/admin/estilistas/crear', component: CrearEstilista },
+  { path: '/admin/historial', component: VistaHistorial },
+
   //
   //
   //
@@ -165,6 +150,7 @@ const routes = [
   //
   //
   //
+
   //Puse muchos comentarios porque no se cuanto se ocupe para lo que vamos a hacer, pero mejor que sobre a que falte, 
   // ya despues borramos lo que no se ocupo, por mientras no puse el login ni el registrar para que no te ocasionara conflictos,
   //recuerda que siempre antes de subir cambios debes de extraer cambios con pull, por si yo hice un cambio antes de que tu subieras algo 
