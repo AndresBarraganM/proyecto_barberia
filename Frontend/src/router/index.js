@@ -5,18 +5,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // AUTH
 import PaginaPrincipal from '../views/PaginaPrincipal.vue'
-// import LoginView from '../views/auth/LoginView.vue'
-// import RegisterView from '../views/auth/RegisterView.vue'
+import LoginView from '../views/auth/LoginView.vue'
+import RegistroView from '../views/auth/RegistroView.vue'
 
 // CLIENTE
-// import ClienteHomeView from '../views/cliente/HomeView.vue'
-//
-//
-//
-//
-//
-//
-//
+import RecuperacionView from '../views/auth/RecuperacionView.vue'
+import PrincipalView from '../views/cliente/PrincipalView.vue'
+import CitasView from '../views/cliente/CitasView.vue'
+import HistorialView from '../views/cliente/HistorialView.vue'
+import ServiciosView from '../views/cliente/ServiciosView.vue'
+import AgendarView from '../views/cliente/AgendarView.vue'
+import PagarView from '../views/cliente/PagarView.vue'
+import ConfiguracionView from '../views/cliente/ConfiguracionView.vue'
 //
 //
 //
@@ -27,13 +27,13 @@ import PaginaPrincipal from '../views/PaginaPrincipal.vue'
 //
 
 // RECEPCIONISTA
-// import RecepcionistaView from '../views/recepcionista/DashboardView.vue'
-//
-//
-//
-//
-//
-//
+import PrincipalRecepcionista from '../views/Recepcionista/PrincipalRecepcionista.vue'
+import CitasRecepcionista from '../views/Recepcionista/CitasRecepcionista.vue'
+import HistorialRecepcionista from '../views/Recepcionista/HistorialRecepcionista.vue'
+import ServicioRecepcionista from '../views/Recepcionista/ServicioRecepcionista.vue'
+import AgendarRecepcionista from '../views/Recepcionista/AgendarRecepcionista.vue'
+import PagoRecepcionista from '../views/Recepcionista/PagoRecepcionista.vue'
+import ConfiguracionRecepcionista from '../views/Recepcionista/ConfiguracionRecepcionista.vue'
 //
 //
 //
@@ -91,19 +91,19 @@ const routes = [
   /* ========= SUHEY ========= */
 
   // AUTH
-  { path: '/', component: PaginaPrincipal }
-  // { path: '/login', component: LoginView },
-  // { path: '/registro', component: RegisterView },
-  // { path: '/recuperar', component: RecoverView },
+  { path: '/', component: PaginaPrincipal },
+  { path: '/login', component: LoginView },
+  { path: '/registro', component: RegistroView },
+  { path: '/recuperar', component: RecuperacionView },
 
   // CLIENTE
-  // { path: '/cliente/inicio', component: ClienteHomeView },
-  // 
-  //
-  //
-  //
-  //
-  //
+  { path: '/cliente/inicio', component: PrincipalView },
+  { path: '/cliente/citas', component: CitasView},
+  { path: '/cliente/historial', component: HistorialView},
+  { path: '/cliente/servicios', component: ServiciosView},
+  { path: '/cliente/agendar', component: AgendarView},
+  { path: '/cliente/pagar', component: PagarView},
+  { path: '/cliente/configuracion', component: ConfiguracionView},
   //
   //
   //
@@ -111,12 +111,13 @@ const routes = [
   //
 
   // RECEPCIONISTA
-  // { path: '/recepcionista', component: RecepcionistaView },
-  // 
-  //
-  //
-  //
-  //
+  { path: '/recepcionista/inicio', component: PrincipalRecepcionista},
+  { path: '/recepcionista/citas', component: CitasRecepcionista},
+  { path: '/recepcionista/historial', component: HistorialRecepcionista},
+  { path: '/recepcionista/servicios', component: ServicioRecepcionista},
+  { path: '/recepcionista/agendar', component: AgendarRecepcionista},
+  { path: '/recepcionista/pago-tarjeta', component: PagoRecepcionista},
+  { path: '/recepcionista/configuracion', component: ConfiguracionRecepcionista},
   //
   //
   //
