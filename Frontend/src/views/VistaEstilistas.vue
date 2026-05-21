@@ -1,0 +1,447 @@
+<template>
+
+  <div class="stylists-layout">
+
+    <!-- MENU -->
+    <button
+      v-if="!menuOpen"
+      class="menu-toggle"
+      @click="menuOpen = true"
+    >
+      ☰
+    </button>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" :class="{ open: menuOpen }">
+
+      <!-- CLOSE -->
+      <button
+        class="close-sidebar"
+        @click="menuOpen = false"
+      >
+        ✕
+      </button>
+
+      <!-- VOLVER -->
+      <router-link to="/admin" class="back-btn">
+        ← Volver
+      </router-link>
+
+      <h2 class="sidebar-title">
+        Estilistas
+      </h2>
+
+      <!-- LISTA -->
+      <div class="stylists-list">
+
+        <div class="stylist-item active">
+          <span class="stylist-icon">👤</span>
+            Estilista 1
+        </div>
+
+      </div>
+
+      <router-link
+          to="/admin/estilistas/crear"
+          class="add-link"
+        >
+          <button class="add-btn">
+            + Dar de alta
+          </button>
+       </router-link>
+
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <h1>Estilista 1</h1>
+
+      <div class="details-card">
+
+        <h2>Detalles</h2>
+
+        <!-- NOMBRE -->
+        <div class="field-group">
+
+          <label>Nombre completo</label>
+
+          <div class="empty-input"></div>
+
+        </div>
+
+        <!-- ESPECIALIDAD -->
+        <div class="field-group">
+
+          <label>Especialidad</label>
+
+          <div class="empty-input"></div>
+
+        </div>
+
+        <!-- EXPERIENCIA -->
+        <div class="field-group">
+
+          <label>Experiencia</label>
+
+          <div class="empty-input"></div>
+
+        </div>
+
+        <!-- BIO -->
+        <div class="field-group">
+
+          <label>Biografía</label>
+
+          <div class="empty-box"></div>
+
+        </div>
+
+        <!-- BOTONES -->
+        <div class="buttons">
+
+          <button class="edit-btn">
+            ✏ Editar
+          </button>
+
+          <button class="delete-btn">
+            🗑 Eliminar
+          </button>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</template>
+
+<script setup>
+
+import { ref } from 'vue'
+
+const menuOpen = ref(false)
+
+</script>
+
+<style scoped>
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+*{
+  box-sizing:border-box;
+  font-family:'Outfit', sans-serif;
+}
+
+.stylists-layout{
+  display:flex;
+  min-height:100vh;
+  background:#f8f4f8;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:250px;
+  background:white;
+  padding:32px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:24px;
+
+  border-right:1px solid #ececec;
+}
+
+.back-btn{
+  text-decoration:none;
+  color:#7b2ff7;
+  font-size:20px;
+}
+
+.sidebar-title{
+  font-size:28px;
+  color:#101828;
+}
+
+.stylists-list{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.stylist-item{
+  width:100%;
+  padding:16px 18px;
+  border-radius:14px;
+  font-size:18px;
+  color:#344054;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.stylist-item.active{
+  background:linear-gradient(135deg,#7b2ff7,#ff0080);
+  color:white;
+  box-shadow:0 6px 16px rgba(123,47,247,0.25);
+}
+
+.add-btn{
+
+  width:100%;
+
+  padding:16px 18px;
+
+  border:none;
+
+  border-radius:14px;
+
+  font-size:18px;
+
+  color:white;
+
+  cursor:pointer;
+
+  background:linear-gradient(135deg,#7b2ff7,#ff0080);
+
+  box-shadow:0 6px 16px rgba(123,47,247,0.25);
+}
+
+/* CONTENT */
+
+.content{
+  flex:1;
+  padding:40px;
+}
+
+.content h1{
+  font-size:42px;
+  color:#101828;
+  margin-bottom:30px;
+}
+
+/* CARD */
+
+.details-card{
+  background:white;
+  border-radius:24px;
+  padding:28px;
+
+  max-width:980px;
+
+  box-shadow:0 8px 20px rgba(0,0,0,0.05);
+}
+
+.details-card h2{
+  font-size:30px;
+  margin-bottom:24px;
+  color:#101828;
+}
+
+.field-group{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+}
+
+label{
+  font-size:20px;
+  color:#101828;
+  font-weight:600;
+}
+
+input,
+textarea{
+  width:100%;
+
+  border:1px solid #d0d5dd;
+
+  border-radius:18px;
+
+  padding:18px;
+
+  font-size:18px;
+
+  outline:none;
+}
+
+textarea{
+  min-height:160px;
+  resize:none;
+}
+
+.empty-box{
+
+  width:100%;
+
+  height:160px;
+
+  border:1px solid #d0d5dd;
+
+  border-radius:18px;
+
+  background:white;
+}
+
+.empty-input{
+
+  width:100%;
+
+  height:64px;
+
+  border:1px solid #d0d5dd;
+
+  border-radius:18px;
+
+  background:white;
+}
+
+/* BUTTONS */
+
+.buttons{
+  display:flex;
+  gap:18px;
+  margin-top:20px;
+}
+
+.edit-btn{
+  border:none;
+  padding:14px 24px;
+  border-radius:14px;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#7b2ff7,#ff0080);
+}
+
+.delete-btn{
+  border:2px solid #ff6b6b;
+  background:white;
+  padding:14px 24px;
+  border-radius:14px;
+  color:#ff3b3b;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* MENU */
+
+.menu-toggle{
+
+  display:none;
+
+  position:absolute;
+
+  top:14px;
+  left:14px;
+
+  z-index:9999;
+
+  border:none;
+
+  width:42px;
+  height:42px;
+
+  border-radius:10px;
+
+  background:#7b2ff7;
+
+  color:white;
+
+  font-size:22px;
+
+  cursor:pointer;
+}
+
+.close-sidebar{
+
+  display:none;
+
+  position:absolute;
+
+  top:20px;
+  right:20px;
+
+  border:none;
+
+  background:none;
+
+  font-size:30px;
+
+  cursor:pointer;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px){
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .close-sidebar{
+    display:block;
+  }
+
+  .sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:-100%;
+
+    width:250px;
+
+    height:100vh;
+
+    z-index:999;
+
+    transition:0.3s ease;
+  }
+
+  .sidebar.open{
+    left:0;
+  }
+
+  .content{
+    width:100%;
+    padding:80px 20px 20px 20px;
+  }
+
+}
+
+@media (max-width: 600px){
+
+  .content h1{
+    font-size:34px;
+  }
+
+  .details-card{
+    padding:20px;
+  }
+
+  .buttons{
+    flex-direction:column;
+  }
+
+  .edit-btn,
+  .delete-btn{
+    width:100%;
+  }
+
+}
+
+.stylist-icon{
+  font-size:22px;
+}
+
+.add-link{
+  text-decoration:none;
+}
+
+</style>

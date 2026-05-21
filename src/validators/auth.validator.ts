@@ -1,22 +1,16 @@
 import { z } from 'zod'
+import { userSchema } from './schemas/user.schema'
 
-export const registerSchema = z.object({
-  name: z
-    .string({ required_error: 'El nombre es requerido' })
-    .min(2, 'El nombre debe tener al menos 2 caracteres')
-    .max(100),
-  email: z
-    .string({ required_error: 'El email es requerido' })
-    .email('Email inválido'),
-  password: z
-    .string({ required_error: 'La contraseña es requerida' })
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .max(100),
+export const registerSchema = userSchema.pick({
+  name: true,
+  email: true,
+  contrasena: true,
+  role: true,
 })
 
-export const loginSchema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'La contraseña es requerida'),
+export const loginSchema = userSchema.pick({
+  email: true,
+  contrasena: true,
 })
 
 export type RegisterInput = z.infer<typeof registerSchema>
