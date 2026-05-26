@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { env } from '../config/env'
-import { JwtPayload } from '../types'
+import { JwtPayload, JwtInput } from '../types'
 
-export const signToken = (payload: JwtPayload): string => {
+export const signToken = (payload: JwtInput): string => {
   return jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'],
   })

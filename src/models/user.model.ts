@@ -1,61 +1,55 @@
 import { prisma } from '../config/database'
 import bcrypt from 'bcryptjs'
 
-// ── Tipos ────────────────────────────────────────────────────────────────────
-
 export interface CreateUserData {
-  name: string
-  email: string
-  password: string
+  Nombre: string
+  Apellido: string
+  Email: string
+  Password: string
+  Rol?: string
 }
 
 export interface UpdateUserData {
-  name?: string
-  email?: string
+  Nombre?: string
+  Apellido?: string
+  Email?: string
+  telefono?: string
 }
 
-// ── Modelo ───────────────────────────────────────────────────────────────────
-
 export const UserModel = {
-  // Busca un usuario por email (para login)
   findByEmail: (email: string) =>
-    prisma.user.findUnique({ where: { email } }),
+    prisma.usuario.findUnique({ where: { Email: email } }),
 
-  // Busca un usuario por ID (sin exponer la contraseña)
   findById: (id: string) =>
-    prisma.user.findUnique({
-      where: { id },
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
+    prisma.usuario.findUnique({
+      where: { Id_usuario: id },
+      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true, Fecha_de_registro: true },
     }),
 
-  // Lista todos los usuarios (solo para admins)
   findAll: () =>
-    prisma.user.findMany({
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
-      orderBy: { createdAt: 'desc' },
+    prisma.usuario.findMany({
+      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true, Fecha_de_registro: true },
+      orderBy: { Fecha_de_registro: 'desc' },
     }),
 
-  // Crea un usuario hasheando la contraseña
   create: async (data: CreateUserData) => {
-    const hashedPassword = await bcrypt.hash(data.password, 12)
-    return prisma.user.create({
-      data: { ...data, password: hashedPassword },
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
+    const hashedPassword = await bcrypt.hash(data.Password, 12)
+    return prisma.usuario.create({
+      data: { ...data, Password: hashedPassword },
+      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true },
     })
   },
 
-  // Actualiza un usuario
   update: (id: string, data: UpdateUserData) =>
-    prisma.user.update({
-      where: { id },
+    prisma.usuario.update({
+      where: { Id_usuario: id },
       data,
-      select: { id: true, name: true, email: true, role: true, createdAt: true },
+      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true },
     }),
 
-  // Elimina un usuario
-  delete: (id: string) => prisma.user.delete({ where: { id } }),
+  delete: (id: string) =>
+    prisma.usuario.delete({ where: { Id_usuario: id } }),
 
-  // Verifica si la contraseña es correcta
   verifyPassword: (plain: string, hashed: string) =>
     bcrypt.compare(plain, hashed),
 }

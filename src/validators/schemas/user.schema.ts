@@ -4,13 +4,19 @@ import { z } from 'zod'
 const roles = ['cliente', 'estilista', 'recepcionista', 'admin'] as const
 
 export const userSchema = z.object({
-  name: z
+  Nombre: z
     .string()
     .trim()
     .min(2, 'El nombre debe tener al menos 2 caracteres')
     .max(50, 'El nombre no puede superar los 50 caracteres'),
 
-  email: z
+  Apellido: z
+    .string()
+    .trim()
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(50, 'El nombre no puede superar los 50 caracteres'),
+
+  Email: z
     .email('Email inválido'),
 
   contrasena: z
