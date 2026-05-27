@@ -110,7 +110,7 @@ const routes = [
   // ESTILISTA
   { path: '/estilista/inicio', component: PrincipalEstilista},
   { path: '/estilista/configuracion', component: ConfiguracionEstilista},
-  { path: '/estilista/Perfil', component: EstilistaPerfil},
+  { path: '/estilista/perfil', component: EstilistaPerfil},
   //
   //
   //
