@@ -391,7 +391,7 @@ const handleLogin = async () => {
     ) {
 
       router.push(
-        '/recepcionista'
+        '/recepcionista/inicio'
       )
 
     }
@@ -401,7 +401,7 @@ const handleLogin = async () => {
     ) {
 
       router.push(
-        '/estilista'
+        '/estilista/inicio'
       )
 
     }
@@ -411,7 +411,7 @@ const handleLogin = async () => {
     ) {
 
       router.push(
-        '/admin'
+        '/admin/inicio'
       )
 
     }
