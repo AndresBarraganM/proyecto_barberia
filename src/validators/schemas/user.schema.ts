@@ -25,8 +25,8 @@ export const userSchema = z.object({
     .max(50, 'La contraseña no puede superar los 50 caracteres')
     // un caracter especial, una mayúscula, una minúscula y un número
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*i\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial'
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial'
     ),
 
     role: z.enum(roles, {
