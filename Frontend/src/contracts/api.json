@@ -158,11 +158,27 @@
   },
 
   "admin": {
+
+        "obtenerServicios": {
+    "method": "GET",
+    "endpoint": "/admin/servicios",
+    "response": [
+    {
+    "id": "number",
+    "nombre": "string",
+    "descripcion": "string",
+    "precio": "number",
+    "duracion": "string"
+    }
+    ]
+    },
+
     "crearServicio": {
       "method": "POST",
       "endpoint": "/admin/servicios",
       "body": {
         "nombre": "string",
+        "descripcion": "string",
         "precio": "number",
         "duracion": "number"
       },
@@ -176,6 +192,7 @@
       "endpoint": "/admin/servicios/{id}",
       "body": {
         "nombre": "string",
+        "descripcion":"string",
         "precio": "number",
         "duracion": "number"
       },
@@ -201,8 +218,124 @@
           "nombre": "string",
           "email": "string",
           "rol": "string"
+            }
+          ]
         }
-      ]
+      
+        ,
+    "obtenerEstilistas": {
+    "method": "GET",
+    "endpoint": "/admin/estilistas",
+    "response": [
+    {
+    "id": "number",
+    "nombre": "string",
+    "especialidad": "string",
+    "experiencia": "string",
+    "biografia": "string"
     }
+    ]
+    },
+
+    "crearEstilista": {
+    "method": "POST",
+    "endpoint": "/admin/estilistas",
+    "body": {
+    "nombre": "string",
+    "especialidad": "string",
+    "experiencia": "string",
+    "biografia": "string"
+    },
+    "response": {
+    "mensaje": "Estilista creado correctamente"
+    }
+    },
+
+    "editarEstilista": {
+    "method": "PUT",
+    "endpoint": "/admin/estilistas/{id}",
+    "body": {
+    "nombre": "string",
+    "especialidad": "string",
+    "experiencia": "string",
+    "biografia": "string"
+    },
+    "response": {
+    "mensaje": "Estilista actualizado"
+    }
+    },
+
+    "eliminarEstilista": {
+    "method": "DELETE",
+    "endpoint": "/admin/estilistas/{id}",
+    "response": {
+    "mensaje": "Estilista eliminado"
+    }
+    },
+
+    "obtenerRecepcionistas": {
+    "method": "GET",
+    "endpoint": "/admin/recepcionistas",
+    "response": [
+    {
+    "id": "number",
+    "nombre": "string",
+    "email": "string",
+    "telefono": "string"
+    }
+    ]
+    },
+
+    "crearRecepcionista": {
+    "method": "POST",
+    "endpoint": "/admin/recepcionistas",
+    "body": {
+    "nombre": "string",
+    "email": "string",
+    "telefono": "string",
+    "password": "string"
+    },
+    "response": {
+    "mensaje": "Recepcionista creado correctamente"
+    }
+    },
+
+    "editarRecepcionista": {
+    "method": "PUT",
+    "endpoint": "/admin/recepcionistas/{id}",
+    "body": {
+    "nombre": "string",
+    "email": "string",
+    "telefono": "string",
+    "password": "string"
+    },
+    "response": {
+    "mensaje": "Recepcionista actualizado"
+    }
+    },
+
+    "eliminarRecepcionista": {
+    "method": "DELETE",
+    "endpoint": "/admin/recepcionistas/{id}",
+    "response": {
+    "mensaje": "Recepcionista eliminado"
+    }
+    },
+
+    "obtenerHistorial": {
+    "method": "GET",
+    "endpoint": "/admin/historial",
+    "response": [
+    {
+    "id": "number",
+    "cliente": "string",
+    "servicio": "string",
+    "fecha": "string",
+    "hora": "string",
+    "precio": "number"
+    }
+    ]
+    }
+
   }
 }
