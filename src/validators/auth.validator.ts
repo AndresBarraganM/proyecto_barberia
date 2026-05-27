@@ -2,14 +2,15 @@ import { z } from 'zod'
 import { userSchema } from './schemas/user.schema'
 
 export const registerSchema = userSchema.pick({
-  name: true,
-  email: true,
+  Nombre: true,
+  Apellido: true,
+  Email: true,
   contrasena: true,
   role: true,
 })
 
 export const loginSchema = userSchema.pick({
-  email: true,
+  Email: true,
   contrasena: true,
 })
 

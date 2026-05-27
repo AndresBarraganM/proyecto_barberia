@@ -1,10 +1,14 @@
 import { Request } from 'express'
 
-// Payload que se codifica dentro del JWT
-export interface JwtPayload {
+export interface JwtInput {
   sub: string
   email: string
-  role: 'cliente'| 'estilista'| 'recepcionista'| 'admin'
+  role: 'cliente' | 'estilista' | 'recepcionista' | 'admin'
+  iat?: number
+  exp?: number
+}
+
+export interface JwtPayload extends JwtInput {
   iat: number
   exp: number
 }

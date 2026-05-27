@@ -4,13 +4,19 @@ import { z } from 'zod'
 const roles = ['cliente', 'estilista', 'recepcionista', 'admin'] as const
 
 export const userSchema = z.object({
-  name: z
+  Nombre: z
     .string()
     .trim()
     .min(2, 'El nombre debe tener al menos 2 caracteres')
     .max(50, 'El nombre no puede superar los 50 caracteres'),
 
-  email: z
+  Apellido: z
+    .string()
+    .trim()
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(50, 'El nombre no puede superar los 50 caracteres'),
+
+  Email: z
     .email('Email inválido'),
 
   contrasena: z
@@ -19,8 +25,8 @@ export const userSchema = z.object({
     .max(50, 'La contraseña no puede superar los 50 caracteres')
     // un caracter especial, una mayúscula, una minúscula y un número
     .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*i\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial'
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial'
     ),
 
     role: z.enum(roles, {
