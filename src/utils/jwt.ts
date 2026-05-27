@@ -3,9 +3,9 @@ import { env } from '../config/env'
 import { JwtPayload, JwtInput } from '../types'
 
 export const signToken = (payload: JwtInput): string => {
-  return jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'],
-  })
+  const exp = Math.floor(Date.now() / 1000) + Number(env.JWT_EXPIRES_IN)
+
+  return jwt.sign({ ...payload, exp }, env.JWT_SECRET)
 }
 
 export const decodeToken = (token: string): JwtPayload => {

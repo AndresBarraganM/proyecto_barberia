@@ -23,12 +23,12 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
 // ── POST /api/auth/login ──────────────────────────────────────────────────────
 export const login = async (req: Request, res: Response): Promise<void> => {
-  const { email, contrasena } = req.body
+  const { Email, contrasena } = req.body
 
   // Son correctos los datos?
   let user
   try {
-    user = await UserModel.findByEmail(email)
+    user = await UserModel.findByEmail(Email)
     if (!user) {
       sendError(res, 'Credenciales inválidas', 401)
       return
