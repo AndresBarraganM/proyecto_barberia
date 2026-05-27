@@ -22,7 +22,7 @@ import ServiciosView from '../views/cliente/ServiciosView.vue'
 import AgendarView from '../views/cliente/AgendarView.vue'
 import PagarView from '../views/cliente/PagarView.vue'
 import ConfiguracionView from '../views/cliente/ConfiguracionView.vue'
-//
+import ClientePerfil from '../views/cliente/ClientePerfil.vue'
 //
 //
 //
@@ -38,7 +38,7 @@ import ServicioRecepcionista from '../views/Recepcionista/ServicioRecepcionista.
 import AgendarRecepcionista from '../views/Recepcionista/AgendarRecepcionista.vue'
 import PagoRecepcionista from '../views/Recepcionista/PagoRecepcionista.vue'
 import ConfiguracionRecepcionista from '../views/Recepcionista/ConfiguracionRecepcionista.vue'
-//
+import RecepcionistaPerfil from '../views/Recepcionista/RecepcionistaPerfil.vue'
 //
 //
 //
@@ -48,9 +48,9 @@ import ConfiguracionRecepcionista from '../views/Recepcionista/ConfiguracionRece
 //
 
 // ESTILISTA
-// import EstilistaView from '../views/estilista/CitasView.vue'
-//
-//
+import PrincipalEstilista from '../views/estilista/PrincipalEstilista.vue'
+import ConfiguracionEstilista from '../views/estilista/ConfiguracionEstilista.vue'
+import EstilistaPerfil from '../views/estilista/EstilistaPerfil.vue'
 //
 //
 //
@@ -84,7 +84,7 @@ const routes = [
   { path: '/cliente/agendar', component: AgendarView},
   { path: '/cliente/pagar', component: PagarView},
   { path: '/cliente/configuracion', component: ConfiguracionView},
-  //
+  { path: '/cliente/perfil', component: ClientePerfil},
   //
   //
   //
@@ -98,7 +98,7 @@ const routes = [
   { path: '/recepcionista/agendar', component: AgendarRecepcionista},
   { path: '/recepcionista/pago-tarjeta', component: PagoRecepcionista},
   { path: '/recepcionista/configuracion', component: ConfiguracionRecepcionista},
-  //
+  { path: '/recepcionista/perfil', component: RecepcionistaPerfil},
   //
   //
   //
@@ -108,9 +108,9 @@ const routes = [
   //
   
   // ESTILISTA
-  // { path: '/estilista', component: EstilistaView },
-  // 
-  //
+  { path: '/estilista/inicio', component: PrincipalEstilista},
+  { path: '/estilista/configuracion', component: ConfiguracionEstilista},
+  { path: '/estilista/Perfil', component: EstilistaPerfil},
   //
   //
   //
@@ -125,7 +125,7 @@ const routes = [
   /* ========= ALEXIA ========= */
 
   // ADMIN
-  { path: '/admin', component: AdminDashboard },
+  { path: '/admin/inicio', component: AdminDashboard },
   { path: '/admin/servicios', component: VistaServicios },
   { path: '/admin/servicios/crear', component: CrearServicio },
   { path: '/admin/estilistas', component: VistaEstilistas },
