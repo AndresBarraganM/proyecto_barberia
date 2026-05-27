@@ -3,14 +3,14 @@ import { verifyToken, decodeToken } from '../utils/jwt'
 import { sendError } from '../utils/response'
 import { AuthRequest, DatabaseToken } from '../types'
 import { encryptsha256 } from '../utils/crypt'
-
+import { TokenModel } from '../models/token.model'
 
 // Verifica el JWT del header Authorization: Bearer <token>
-export const authenticate = (
+export async function authenticate(
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> {
   const authHeader = req.headers.authorization
 
   if (!authHeader?.startsWith('Bearer ')) {
@@ -41,18 +41,10 @@ export const authenticate = (
 
   // Verificar con base de datos
   try {
-    // TODO obtener de verdad el token de la base de datos, por ahora es un mock
-    // data = obtenerBD(token_sha256)
-    let data: DatabaseToken | null
-    data = {
-      user_id: '1234',
-      ip_address: '123',
-      user_agent: req.headers['user-agent'] || '',
-      revoked_at: 1778726072, 
-    }
+    const data = await TokenModel.findValidToken(token_sha256)
 
     // Ver que existe y no este revocado
-    if (!data || data.revoked_at > Math.floor(Date.now() / 1000)) {
+    if (!data || data.expired_at.getTime() <= Date.now()) {
       sendError(res, 'Token revocado o inexistente', 401)
       return
     }
