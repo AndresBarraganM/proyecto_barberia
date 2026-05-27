@@ -107,6 +107,28 @@
           </div>
 
         </router-link>
+
+        <!-- RECEPCIONISTAS -->
+  <router-link
+    to="/admin/recepcionistas"
+    class="card-link"
+  >
+  
+    <div class="admin-card">
+  
+      <div class="card-icon pink stylist-icon">
+        <Users />
+      </div>
+  
+      <h2>Recepcionistas</h2>
+  
+      <p>
+        Administra recepcionistas
+      </p>
+  
+    </div>
+  
+  </router-link>  
       </div>
     </main>
   </div>

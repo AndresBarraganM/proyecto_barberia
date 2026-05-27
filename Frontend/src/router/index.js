@@ -5,6 +5,8 @@ import CrearServicio from '../views/CrearServicio.vue'
 import VistaEstilistas from '../views/VistaEstilistas.vue'
 import CrearEstilista from '../views/CrearEstilista.vue'
 import VistaHistorial from '../views/VistaHistorial.vue'
+import CrearRecepcionista from '../views/CrearRecepcionista.vue'
+import VistaRecepcionistas from '../views/VistaRecepcionistas.vue'
 
 /* ========= SUHEY ========= */
 
@@ -131,6 +133,8 @@ const routes = [
   { path: '/admin/estilistas', component: VistaEstilistas },
   { path: '/admin/estilistas/crear', component: CrearEstilista },
   { path: '/admin/historial', component: VistaHistorial },
+  { path: '/admin/recepcionistas', component: VistaRecepcionistas },
+  { path: '/admin/recepcionistas/crear', component: CrearRecepcionista },
 
   //
   //
