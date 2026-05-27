@@ -312,9 +312,11 @@ const menuOpen = ref(false)
 /* CARDS */
 
 .cards-container {
-  margin-top: 60px;
-  display: flex;
-  gap: 36px;
+  
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-top: 30px;
 }
 
 .admin-card {

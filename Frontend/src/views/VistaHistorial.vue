@@ -23,7 +23,7 @@
       </button>
 
       <router-link
-          to="/admin"
+          to="/admin/inicio"
           class="back-btn"
         >
           ← Volver

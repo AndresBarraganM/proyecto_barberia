@@ -23,7 +23,7 @@
       </button>
 
       <!-- VOLVER -->
-      <router-link to="/admin" class="back-btn">
+      <router-link to="/admin/inicio" class="back-btn">
         ← Volver
       </router-link>
 
