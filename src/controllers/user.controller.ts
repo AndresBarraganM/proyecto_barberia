@@ -3,6 +3,8 @@ import { UserModel } from '../models/user.model'
 import { sendSuccess, sendError } from '../utils/response'
 import { AuthRequest } from '../types'
 
+/* 
+NOTA> ESTE VENIA POR DEFAULT NO REFLEJA NINGUN ENDPOINT REAL HASTA AHORA
 // ── GET /api/users  (Admin) ───────────────────────────────────────────────────
 export const getAll = async (_req: AuthRequest, res: Response): Promise<void> => {
   const users = await UserModel.findAll()
@@ -14,7 +16,7 @@ export const getById = async (req: AuthRequest, res: Response): Promise<void> =>
   const { id } = req.params
 
   // Un usuario solo puede ver su propio perfil, un admin puede ver cualquiera
-  if (req.user?.role !== 'ADMIN' && req.user?.userId !== id) {
+  if (req.user?.role !== 'admin' && req.user?.userId !== id) {
     sendError(res, 'No tienes permisos para ver este usuario', 403)
     return
   }
@@ -47,3 +49,4 @@ export const remove = async (req: AuthRequest, res: Response): Promise<void> => 
   await UserModel.delete(id)
   sendSuccess(res, null, 'Usuario eliminado')
 }
+ */
