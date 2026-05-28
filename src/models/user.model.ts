@@ -6,7 +6,7 @@ export interface CreateUserData {
   Apellido: string
   Email: string
   Password: string
-  Rol?: string
+  rol?: string
 }
 
 export interface UpdateUserData {
@@ -18,7 +18,8 @@ export interface UpdateUserData {
 
 export const UserModel = {
   findByEmail: (email: string) =>
-    prisma.usuario.findUnique({ where: { Email: email } }),
+    prisma.usuario.findUnique({ where: { Email: email },
+    include:{Rol_Usuario_RolToRol: true} }),
 
   findById: (id: string) =>
     prisma.usuario.findUnique({

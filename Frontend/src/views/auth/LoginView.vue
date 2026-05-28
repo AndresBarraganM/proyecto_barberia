@@ -326,9 +326,9 @@ const handleLogin = async () => {
             SE ENVIA IGUAL
           */
 
-          email: email.value,
+          Email: email.value,
 
-          constrasena:
+          contrasena:
             password.value
 
         }
@@ -342,13 +342,17 @@ const handleLogin = async () => {
     const data =
       response.data
 
+    console.log(data)
+    console.log(data.data)
+    console.log(data.data.user)
+
     /*
       GUARDAR TOKEN
     */
 
     localStorage.setItem(
       'token',
-      data.token
+      data.data.token
     )
 
     /*
@@ -357,7 +361,7 @@ const handleLogin = async () => {
 
     localStorage.setItem(
       'rol',
-      data.rol
+      data.data.user.Rol
     )
 
     /*
@@ -367,7 +371,7 @@ const handleLogin = async () => {
     localStorage.setItem(
       'usuario',
       JSON.stringify(
-        data.usuario
+        data.data.user
       )
     )
     
@@ -375,6 +379,57 @@ const handleLogin = async () => {
     /*
       REDIRECCION SEGUN ROL
     */
+
+    /*
+    const rol =
+    data.data.user.Rol || 'cliente'
+
+    if (
+      rol === 'cliente'
+    ) {
+
+      router.push(
+        '/cliente/inicio'
+      )
+
+    }
+
+    else if (
+      rol === 'recepcionista'
+    ) {
+
+      router.push(
+        '/recepcionista/inicio'
+      )
+
+    }
+
+    else if (
+      rol === 'estilista'
+    ) {
+
+      router.push(
+        '/estilista/inicio'
+      )
+
+    }
+
+    else if (
+      rol === 'admin'
+    ) {
+
+      router.push(
+        '/admin/inicio'
+      )
+
+    }
+
+    else {
+
+      errorMessage.value =
+        'Rol no válido'
+
+    }*/
 
     if (
       data.rol === 'cliente'
@@ -421,12 +476,14 @@ const handleLogin = async () => {
       errorMessage.value =
         'Rol no válido'
 
-    }
+    } 
 
   }
 
   catch (error) {
 
+  console.log(error.response)
+  console.log(error.response.data)
   console.error(error)
 
   /*
