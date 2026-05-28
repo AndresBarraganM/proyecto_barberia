@@ -17,6 +17,7 @@ export interface UpdateUserData {
 }
 
 export const UserModel = {
+  /*
   findByEmail: (email: string) =>
     prisma.usuario.findUnique({ where: { Email: email } }),
 
@@ -52,4 +53,5 @@ export const UserModel = {
 
   verifyPassword: (plain: string, hashed: string) =>
     bcrypt.compare(plain, hashed),
+*/
 }
