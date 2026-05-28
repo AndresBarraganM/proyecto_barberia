@@ -37,6 +37,14 @@ export const UserModel = {
       select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true },
     })
   },
+  
+  findRolByNombre: async (nombre: string): Promise<string | null> => {
+  const rol = await prisma.rol.findFirst({
+    where: { Rol: { equals: nombre, mode: 'insensitive' } },
+    select: { id_rol: true }
+  })
+  return rol?.id_rol ?? null
+},
 
   update: (id: string, data: UpdateUserData) =>
     (() => { throw new Error('Not implemented') })(),

@@ -8,17 +8,35 @@ import { createHash } from 'crypto';
 
 // ── POST /api/auth/register ───────────────────────────────────────────────────
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { Nombre, Apellido, Email, contrasena, Rol } = req.body
+  const { Nombre, Apellido, Email, contrasena, role } = req.body
+  console.log(role)
 
   const existing = await UserModel.findByEmail(Email)
   if (existing) {
-    sendError(res, 'El email ya está registrado', 409)
+    res.status(401).json({ message: 'Correo o teléfono ya registrados' })
     return
   }
 
-  const user = await UserModel.create({ Nombre, Apellido, Email, Password: contrasena, Rol })
-  const token = signToken({ sub: user.Id_usuario, email: user.Email, role: 'cliente' })
-  sendSuccess(res, { user, token }, 'Usuario registrado correctamente', 201)
+  // Buscar UUID del rol por nombre
+  const rolId = await UserModel.findRolByNombre(role)
+  if (!rolId) {
+    res.status(400).json({ message: 'Formato inválido' })
+    return
+  }
+
+  try {
+    await UserModel.create({
+      Nombre: Nombre,
+      Apellido: Apellido,
+      Email: Email,
+      Password: contrasena,
+      Rol: rolId,
+    })
+    res.status(201).json({ message: 'Cuenta creada correctamente' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error del servidor' })
+  }
 }
 
 // ── POST /api/auth/login ──────────────────────────────────────────────────────
