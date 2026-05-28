@@ -1,34 +1,22 @@
 <template>
   <div class="auth-container">
-
     <!-- IMAGEN -->
     <div class="auth-image">
-
       <div class="image-box">
-
-        <img
-          src="../../assets/images/barberia.png"
-          alt="Barbería"
-        />
-
+        <img src="../../assets/images/barberia.png" alt="Barbería" />
       </div>
-
     </div>
 
     <!-- LOGIN -->
     <div class="auth-card">
-
       <div class="logo">✂️</div>
 
       <h2>Barbería-nombre</h2>
 
-      <p class="subtitle">
-        Bienvenido de nuevo
-      </p>
+      <p class="subtitle">Bienvenido de nuevo</p>
 
       <!-- EMAIL -->
       <div class="input-group">
-
         <label>Email</label>
 
         <input
@@ -40,18 +28,13 @@
         />
 
         <!-- ERROR EMAIL -->
-        <p
-          v-if="emailError"
-          class="field-error"
-        >
+        <p v-if="emailError" class="field-error">
           {{ emailError }}
         </p>
-
       </div>
 
       <!-- PASSWORD -->
       <div class="input-group">
-
         <label>Contraseña</label>
 
         <input
@@ -63,80 +46,53 @@
         />
 
         <!-- ERROR PASSWORD -->
-        <p
-          v-if="passwordError"
-          class="field-error"
-        >
+        <p v-if="passwordError" class="field-error">
           {{ passwordError }}
         </p>
-
       </div>
 
       <!-- ERROR GENERAL -->
-      <p
-        v-if="errorMessage"
-        class="error-message"
-      >
+      <p v-if="errorMessage" class="error-message">
         {{ errorMessage }}
       </p>
 
       <!-- BOTON -->
-      <button
-        class="btn-primary"
-        @click="handleLogin"
-        :disabled="loading"
-      >
-
-        {{ loading ? 'Cargando...' : 'Iniciar Sesión' }}
-
+      <button class="btn-primary" @click="handleLogin" :disabled="loading">
+        {{ loading ? "Cargando..." : "Iniciar Sesión" }}
       </button>
 
       <!-- LINKS -->
-      <p
-        class="link"
-        @click="irRecuperar"
-      >
-        Recuperar contraseña
-      </p>
+      <p class="link" @click="irRecuperar">Recuperar contraseña</p>
 
-      <p
-        class="link"
-        @click="irRegistro"
-      >
-        Crear cuenta
-      </p>
-
+      <p class="link" @click="irRegistro">Crear cuenta</p>
     </div>
-
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 
-import { ref } from 'vue'
+import { useRouter } from "vue-router";
 
-import { useRouter } from 'vue-router'
+import axios from "axios";
 
-import axios from 'axios'
-
-const router = useRouter()
+const router = useRouter();
 
 // VARIABLES
-const email = ref('')
+const email = ref("");
 
-const password = ref('')
+const password = ref("");
 
-const loading = ref(false)
+const loading = ref(false);
 
-const errorMessage = ref('')
+const errorMessage = ref("");
 
-const emailError = ref('')
+const emailError = ref("");
 
-const passwordError = ref('')
+const passwordError = ref("");
 
 // URL BACKEND
-const API_URL =
-  'http://localhost:3000/api/auth/login'
+const API_URL = "http://localhost:3000/api/auth/login";
 
 /*
 |==============================================
@@ -145,13 +101,10 @@ const API_URL =
 */
 
 const validarEmail = (correo) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const regex =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-  return regex.test(correo)
-
-}
+  return regex.test(correo);
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -166,13 +119,10 @@ const validarEmail = (correo) => {
 */
 
 const validarPassword = (pass) => {
+  const regex = /^(?=.*[A-Z])(?=.*\d).{8,15}$/;
 
-  const regex =
-    /^(?=.*[A-Z])(?=.*\d).{8,15}$/
-
-  return regex.test(pass)
-
-}
+  return regex.test(pass);
+};
 
 /*
 --------------------------------------------------------------------------
@@ -181,30 +131,22 @@ const validarPassword = (pass) => {
 */
 
 const validarCampoEmail = () => {
-
-  emailError.value = ''
+  emailError.value = "";
 
   if (!email.value) {
+    emailError.value = "El correo es obligatorio";
 
-    emailError.value =
-      'El correo es obligatorio'
-
-    return false
-
+    return false;
   }
 
   if (!validarEmail(email.value)) {
+    emailError.value = "Ingresa un correo válido";
 
-    emailError.value =
-      'Ingresa un correo válido'
-
-    return false
-
+    return false;
   }
 
-  return true
-
-}
+  return true;
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -212,65 +154,40 @@ const validarCampoEmail = () => {
 */
 
 const validarCampoPassword = () => {
-
-  passwordError.value = ''
+  passwordError.value = "";
 
   if (!password.value) {
+    passwordError.value = "La contraseña es obligatoria";
 
-    passwordError.value =
-      'La contraseña es obligatoria'
-
-    return false
-
+    return false;
   }
 
-  if (
-    password.value.length < 8
-  ) {
+  if (password.value.length < 8) {
+    passwordError.value = "Mínimo 8 caracteres";
 
-    passwordError.value =
-      'Mínimo 8 caracteres'
-
-    return false
-
+    return false;
   }
 
-  if (
-    password.value.length > 15
-  ) {
+  if (password.value.length > 15) {
+    passwordError.value = "Máximo 15 caracteres";
 
-    passwordError.value =
-      'Máximo 15 caracteres'
-
-    return false
-
+    return false;
   }
 
-  if (
-    !/[A-Z]/.test(password.value)
-  ) {
+  if (!/[A-Z]/.test(password.value)) {
+    passwordError.value = "Debe contener una mayúscula";
 
-    passwordError.value =
-      'Debe contener una mayúscula'
-
-    return false
-
+    return false;
   }
 
-  if (
-    !/\d/.test(password.value)
-  ) {
+  if (!/\d/.test(password.value)) {
+    passwordError.value = "Debe contener un número";
 
-    passwordError.value =
-      'Debe contener un número'
-
-    return false
-
+    return false;
   }
 
-  return true
-
-}
+  return true;
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -279,214 +196,84 @@ const validarCampoPassword = () => {
 */
 
 const handleLogin = async () => {
-
-  errorMessage.value = ''
+  errorMessage.value = "";
 
   // VALIDAR CAMPOS
-  const emailValido =
-    validarCampoEmail()
+  const emailValido = validarCampoEmail();
 
-  const passwordValido =
-    validarCampoPassword()
+  const passwordValido = validarCampoPassword();
 
-  if (
-    !emailValido ||
-    !passwordValido
-  ) {
-
-    return
-
+  if (!emailValido || !passwordValido) {
+    return;
   }
 
-  loading.value = true
+  loading.value = true;
 
   try {
-
-    console.log(
-      'Intentando iniciar sesión...'
-    )
+    console.log("Intentando iniciar sesión...");
 
     /*
       PETICION AL BACKEND
     */
 
-    const response =
-      await axios.post(
-        API_URL,
-        {
-
-          /*
+    const response = await axios.post(API_URL, {
+      /*
             EL CONTRATO API DICE:
 
             {
-              email,
-              constrasena
+              Email,
+              contrasena
             }
 
             SE ENVIA IGUAL
           */
 
-          Email: email.value,
+      Email: email.value,
 
-          contrasena:
-            password.value
+      contrasena: password.value,
+    });
 
-        }
-      )
+    console.log("Respuesta:", response.data);
 
-    console.log(
-      'Respuesta:',
-      response.data
-    )
-
-    const data =
-      response.data
-
-    console.log(data)
-    console.log(data.data)
-    console.log(data.data.user)
+    const data = response.data;
 
     /*
       GUARDAR TOKEN
     */
 
-    localStorage.setItem(
-      'token',
-      data.data.token
-    )
+    localStorage.setItem("token", data.token);
 
     /*
       GUARDAR ROL
     */
 
-    localStorage.setItem(
-      'rol',
-      data.data.user.Rol
-    )
+    localStorage.setItem("rol", data.rol);
 
     /*
       GUARDAR USUARIO
     */
 
-    localStorage.setItem(
-      'usuario',
-      JSON.stringify(
-        data.data.user
-      )
-    )
-    
+    localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
     /*
       REDIRECCION SEGUN ROL
     */
 
+    if (data.rol === "cliente") {
+      router.push("/cliente/inicio");
+    } else if (data.rol === "recepcionista") {
+      router.push("/recepcionista/inicio");
+    } else if (data.rol === "estilista") {
+      router.push("/estilista/inicio");
+    } else if (data.rol === "admin") {
+      router.push("/admin/inicio");
+    } else {
+      errorMessage.value = "Rol no válido";
+    }
+  } catch (error) {
+    console.error(error);
+
     /*
-    const rol =
-    data.data.user.Rol || 'cliente'
-
-    if (
-      rol === 'cliente'
-    ) {
-
-      router.push(
-        '/cliente/inicio'
-      )
-
-    }
-
-    else if (
-      rol === 'recepcionista'
-    ) {
-
-      router.push(
-        '/recepcionista/inicio'
-      )
-
-    }
-
-    else if (
-      rol === 'estilista'
-    ) {
-
-      router.push(
-        '/estilista/inicio'
-      )
-
-    }
-
-    else if (
-      rol === 'admin'
-    ) {
-
-      router.push(
-        '/admin/inicio'
-      )
-
-    }
-
-    else {
-
-      errorMessage.value =
-        'Rol no válido'
-
-    }*/
-
-    if (
-      data.rol === 'cliente'
-    ) {
-
-      router.push(
-        '/cliente/inicio'
-      )
-
-    }
-
-    else if (
-      data.rol === 'recepcionista'
-    ) {
-
-      router.push(
-        '/recepcionista/inicio'
-      )
-
-    }
-
-    else if (
-      data.rol === 'estilista'
-    ) {
-
-      router.push(
-        '/estilista/inicio'
-      )
-
-    }
-
-    else if (
-      data.rol === 'admin'
-    ) {
-
-      router.push(
-        '/admin/inicio'
-      )
-
-    }
-
-    else {
-
-      errorMessage.value =
-        'Rol no válido'
-
-    } 
-
-  }
-
-  catch (error) {
-
-  console.log(error.response)
-  console.log(error.response.data)
-  console.error(error)
-
-  /*
   |--------------------------------------------------------------------------
   | USUARIO SIMULADO
   |--------------------------------------------------------------------------
@@ -496,121 +283,70 @@ const handleLogin = async () => {
   |
   */
 
-  const usuarioDemo = {
+    const usuarioDemo = {
+      email: "cliente@demo.com",
 
-    email: 'cliente@demo.com',
+      password: "Cliente1",
 
-    password: 'Cliente1',
+      token: "token-demo-123",
 
-    token: 'token-demo-123',
+      rol: "cliente",
 
-    rol: 'cliente',
+      usuario: {
+        id: 1,
 
-    usuario: {
+        nombre: "Cliente Demo",
 
-      id: 1,
+        email: "cliente@demo.com",
+      },
+    };
 
-      nombre: 'Cliente Demo',
-
-      email: 'cliente@demo.com'
-
-    }
-
-  }
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | LOGIN DEMO
   |--------------------------------------------------------------------------
   */
 
-  if (
+    if (
+      email.value === usuarioDemo.email &&
+      password.value === usuarioDemo.password
+    ) {
+      console.log("Entrando con usuario demo");
 
-    email.value === usuarioDemo.email &&
+      localStorage.setItem("token", usuarioDemo.token);
 
-    password.value === usuarioDemo.password
+      localStorage.setItem("rol", usuarioDemo.rol);
 
-  ) {
+      localStorage.setItem(
+        "usuario",
 
-    console.log(
-      'Entrando con usuario demo'
-    )
+        JSON.stringify(usuarioDemo.usuario),
+      );
 
-    localStorage.setItem(
-      'token',
-      usuarioDemo.token
-    )
+      router.push("/cliente/inicio");
 
-    localStorage.setItem(
-      'rol',
-      usuarioDemo.rol
-    )
+      return;
+    }
 
-    localStorage.setItem(
-      'usuario',
-
-      JSON.stringify(
-        usuarioDemo.usuario
-      )
-    )
-
-    router.push(
-      '/cliente/inicio'
-    )
-
-    return
-
-  }
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | ERRORES BACKEND
   |--------------------------------------------------------------------------
   */
 
-  if (
-    error.response?.status === 401
-  ) {
-
-    errorMessage.value =
-      'No existe el usuario o la contraseña es incorrecta'
-
+    if (error.response?.status === 401) {
+      errorMessage.value = "No existe el usuario o la contraseña es incorrecta";
+    } else if (error.response?.status === 400) {
+      errorMessage.value = "Formato de formulario erróneo";
+    } else if (error.response?.status === 500) {
+      errorMessage.value = "Error en el servidor";
+    } else {
+      errorMessage.value = "No se pudo conectar con el servidor";
+    }
+  } finally {
+    loading.value = false;
   }
-
-  else if (
-    error.response?.status === 400
-  ) {
-
-    errorMessage.value =
-      'Formato de formulario erróneo'
-
-  }
-
-  else if (
-    error.response?.status === 500
-  ) {
-
-    errorMessage.value =
-      'Error en el servidor'
-
-  }
-
-  else {
-
-    errorMessage.value =
-      'No se pudo conectar con el servidor'
-
-  }
-
-}
-
-  finally {
-
-    loading.value = false
-
-  }
-
-}
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -619,10 +355,8 @@ const handleLogin = async () => {
 */
 
 const irRegistro = () => {
-
-  router.push('/registro')
-
-}
+  router.push("/registro");
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -631,37 +365,26 @@ const irRegistro = () => {
 */
 
 const irRecuperar = () => {
-
-  router.push('/recuperar')
-
-}
-
+  router.push("/recuperar");
+};
 </script>
 
 <style scoped>
-
 .auth-container {
-
   display: flex;
 
   height: 100vh;
 
-  background: linear-gradient(
-    135deg,
-    #f3e8ff,
-    #fdf2f8
-  );
+  background: linear-gradient(135deg, #f3e8ff, #fdf2f8);
 
   align-items: center;
 
   justify-content: center;
-
 }
 
 /* IMAGEN */
 
 .auth-image {
-
   flex: 1;
 
   display: flex;
@@ -669,11 +392,9 @@ const irRecuperar = () => {
   align-items: center;
 
   justify-content: center;
-
 }
 
 .image-box {
-
   width: 70%;
 
   height: 550px;
@@ -682,29 +403,20 @@ const irRecuperar = () => {
 
   border-radius: 25px;
 
-  background: rgba(
-    255,
-    255,
-    255,
-    0.4
-  );
+  background: rgba(255, 255, 255, 0.4);
 
   backdrop-filter: blur(10px);
 
-  box-shadow:
-    0 20px 40px
-    rgba(0,0,0,0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 
   display: flex;
 
   align-items: center;
 
   justify-content: center;
-
 }
 
 .image-box img {
-
   max-width: 90%;
 
   max-height: 100%;
@@ -712,13 +424,11 @@ const irRecuperar = () => {
   object-fit: contain;
 
   border-radius: 20px;
-
 }
 
 /* CARD */
 
 .auth-card {
-
   width: 400px;
 
   background: white;
@@ -731,66 +441,50 @@ const irRecuperar = () => {
 
   text-align: center;
 
-  box-shadow:
-    0 10px 30px
-    rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
-
 }
 
 .auth-card:hover {
-
   transform: scale(1.03);
 
-  box-shadow:
-    0 20px 50px
-    rgba(0,0,0,0.2);
-
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 /* LOGO */
 
 .logo {
-
   font-size: 40px;
 
   margin-bottom: 10px;
-
 }
 
 /* TITULO */
 
 h2 {
-
   margin-bottom: 10px;
-
 }
 
 /* SUBTITULO */
 
 .subtitle {
-
   color: #777;
 
   margin-bottom: 25px;
-
 }
 
 /* INPUTS */
 
 .input-group {
-
   text-align: left;
 
   margin-bottom: 15px;
-
 }
 
 .input-group label {
-
   display: block;
 
   margin-bottom: 6px;
@@ -800,11 +494,9 @@ h2 {
   font-weight: bold;
 
   color: #555;
-
 }
 
 .input {
-
   width: 100%;
 
   padding: 12px;
@@ -820,35 +512,27 @@ h2 {
   transition:
     border 0.2s ease,
     box-shadow 0.2s ease;
-
 }
 
 .input:focus {
-
   border: 1px solid #a855f7;
 
-  box-shadow:
-    0 0 0 4px
-    rgba(168,85,247,0.1);
-
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
 }
 
 /* ERROR INPUT */
 
 .field-error {
-
   color: #ef4444;
 
   font-size: 13px;
 
   margin-top: 5px;
-
 }
 
 /* ERROR GENERAL */
 
 .error-message {
-
   color: #ef4444;
 
   font-size: 14px;
@@ -856,22 +540,16 @@ h2 {
   margin-bottom: 15px;
 
   margin-top: 10px;
-
 }
 
 /* BOTON */
 
 .btn-primary {
-
   width: 100%;
 
   padding: 12px;
 
-  background: linear-gradient(
-    90deg,
-    #a855f7,
-    #ec4899
-  );
+  background: linear-gradient(90deg, #a855f7, #ec4899);
 
   border: none;
 
@@ -888,29 +566,23 @@ h2 {
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
-
 }
 
 .btn-primary:hover {
-
   opacity: 0.9;
 
   transform: scale(1.02);
-
 }
 
 .btn-primary:disabled {
-
   opacity: 0.6;
 
   cursor: not-allowed;
-
 }
 
 /* LINKS */
 
 .link {
-
   color: #a855f7;
 
   cursor: pointer;
@@ -918,101 +590,73 @@ h2 {
   margin-top: 15px;
 
   font-size: 14px;
-
 }
 
 .link:hover {
-
   text-decoration: underline;
-
 }
 
 /* TABLET */
 
 @media (max-width: 1024px) {
-
   .image-box {
-
     width: 80%;
 
     height: 450px;
-
   }
 
   .auth-card {
-
     width: 350px;
 
     padding: 30px;
-
   }
-
 }
 
 /* CELULAR */
 
 @media (max-width: 768px) {
-
   .auth-container {
-
     flex-direction: column;
 
     padding: 20px;
-
   }
 
   .auth-image {
-
     width: 100%;
 
     margin-bottom: 20px;
-
   }
 
   .image-box {
-
     width: 90%;
 
     height: 250px;
 
     padding: 20px;
-
   }
 
   .auth-card {
-
     width: 100%;
 
     margin: 0;
 
     padding: 25px;
-
   }
-
 }
 
 /* CELULAR PEQUEÑO */
 
 @media (max-width: 480px) {
-
   .auth-card {
-
     padding: 20px;
-
   }
 
   .btn-primary {
-
     padding: 10px;
-
   }
 
   h2 {
-
     font-size: 20px;
-
   }
-
 }
-
 </style>

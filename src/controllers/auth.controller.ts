@@ -8,7 +8,7 @@ import { createHash } from 'crypto';
 
 // ── POST /api/auth/register ───────────────────────────────────────────────────
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { Nombre, Apellido, Email, contrasena, rol } = req.body
+  const { Nombre, Apellido, Email, contrasena, Rol } = req.body
 
   const existing = await UserModel.findByEmail(Email)
   if (existing) {
@@ -16,16 +16,14 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     return
   }
 
-  const user = await UserModel.create({ Nombre, Apellido, Email, Password: contrasena, rol })
+  const user = await UserModel.create({ Nombre, Apellido, Email, Password: contrasena, Rol })
   const token = signToken({ sub: user.Id_usuario, email: user.Email, role: 'cliente' })
   sendSuccess(res, { user, token }, 'Usuario registrado correctamente', 201)
 }
+
 // ── POST /api/auth/login ──────────────────────────────────────────────────────
 export const login = async (req: Request, res: Response): Promise<void> => {
-  console.log(req.body)
   const { Email, contrasena } = req.body
-  
-
 
   // Son correctos los datos?
   let user
@@ -73,13 +71,17 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     return
   }
 
-  const { Password: _, ...safeUser } = user
-  const userFormatted = {
-    ...safeUser,
-    rol: user.Rol_Usuario_RolToRol?.Rol.toLowerCase()
-  }
-
-  sendSuccess(res, { user: userFormatted, token }, 'Login exitoso')
+  res.status(200).json({
+    token,
+    rol: user.Rol_Usuario_RolToRol?.Rol.toLowerCase() ?? 'cliente',
+    usuario: {
+      Id_usuario: user.Id_usuario,
+      Nombre: user.Nombre,
+      Apellido: user.Apellido,
+      Email: user.Email,
+      Rol: user.Rol_Usuario_RolToRol?.Rol.toLowerCase() ?? 'cliente',
+    }
+  })
 }
 
 // ── GET /api/auth/me ──────────────────────────────────────────────────────────

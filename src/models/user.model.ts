@@ -6,7 +6,7 @@ export interface CreateUserData {
   Apellido: string
   Email: string
   Password: string
-  rol?: string
+  Rol?: string
 }
 
 export interface UpdateUserData {
