@@ -528,15 +528,17 @@ const registrar = async () => {
             SOLO CLIENTES
           */
 
-          nombre: nombre.value,
+          Nombre: nombre.value,
 
-          telefono: telefono.value,
+          Apellido: 'Sin apellido',
 
-          email: email.value,
+          //Telefono: telefono.value,
 
-          password: password.value,
+          Email: email.value,
 
-          rol: 'cliente'
+          contrasena: password.value,
+
+          role: 'cliente'
 
         }
       )
@@ -588,7 +590,7 @@ const registrar = async () => {
     */
 
     if (
-      error.response?.status === 401
+      error.response?.status === 409
     ) {
 
       errorMessage.value =
