@@ -17,7 +17,6 @@ export interface UpdateUserData {
 }
 
 export const UserModel = {
-  /*
   findByEmail: (email: string) =>
     prisma.usuario.findUnique({ where: { Email: email } }),
 
@@ -28,10 +27,7 @@ export const UserModel = {
     }),
 
   findAll: () =>
-    prisma.usuario.findMany({
-      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true, Fecha_de_registro: true },
-      orderBy: { Fecha_de_registro: 'desc' },
-    }),
+    (() => { throw new Error('Not implemented') })(),
 
   create: async (data: CreateUserData) => {
     const hashedPassword = await bcrypt.hash(data.Password, 12)
@@ -42,16 +38,12 @@ export const UserModel = {
   },
 
   update: (id: string, data: UpdateUserData) =>
-    prisma.usuario.update({
-      where: { Id_usuario: id },
-      data,
-      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true },
-    }),
+    (() => { throw new Error('Not implemented') })(),
 
   delete: (id: string) =>
-    prisma.usuario.delete({ where: { Id_usuario: id } }),
+    (() => { throw new Error('Not implemented') })(),
 
   verifyPassword: (plain: string, hashed: string) =>
     bcrypt.compare(plain, hashed),
-*/
+
 }
