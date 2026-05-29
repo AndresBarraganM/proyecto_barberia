@@ -113,6 +113,29 @@ export const updateMe = async (req: AuthRequest, res: Response): Promise<void> =
     res.status(500).json({ message: 'Error del servidor' })
   }
 }
+
+//  --GET api/cliente/citas
+export const getCitas = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const citas = await CitaModel.findProximasByCliente(req.user!.sub)
+
+    res.status(200).json({
+      citas: citas.map(c => ({
+        id: c.Id_cita,
+        fecha: new Date(c.Fecha_cita!).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }),
+        hora: c.Hora_inicio ? new Date(c.Hora_inicio).toISOString().substring(11, 16) : '',
+        servicio: c.Servicio?.Nombre_Servicio ?? '',
+        estilista: c.Usuario_Citas_Id_estilistaToUsuario
+          ? `${c.Usuario_Citas_Id_estilistaToUsuario.Nombre} ${c.Usuario_Citas_Id_estilistaToUsuario.Apellido}`
+          : ''
+      }))
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error del servidor' })
+  }
+}
+
 // --GET api/cliente/historial
 export const getHistorial = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -136,6 +159,26 @@ export const getHistorial = async (req: AuthRequest, res: Response): Promise<voi
         detalles: c.Servicio?.Descripcion ?? ''
       }))
     })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error del servidor' })
+  }
+}
+
+// --PUT api/cliente/citas/cancelar/:id
+export const cancelarCita = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const id_cita = parseInt(req.params['id'] as string)
+
+    const cita = await CitaModel.findById(id_cita, req.user!.sub)
+    if (!cita) {
+      res.status(404).json({ message: 'La cita no existe' })
+      return
+    }
+
+    await CitaModel.cancelar(id_cita)
+
+    res.status(200).json({ message: 'Cita cancelada correctamente' })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Error del servidor' })

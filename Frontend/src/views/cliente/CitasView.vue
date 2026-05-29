@@ -1,114 +1,55 @@
 <template>
-
   <div class="citas-page">
-
     <!-- MENU -->
     <MenuCliente />
 
     <!-- CONTENIDO -->
     <main class="content">
-
       <!-- HEADER -->
       <div class="header">
-
         <div>
+          <h1>Mis Próximas Citas</h1>
 
-          <h1>
-            Mis Próximas Citas
-          </h1>
-
-          <p class="subtitle">
-            Gestiona tus reservaciones
-          </p>
-
+          <p class="subtitle">Gestiona tus reservaciones</p>
         </div>
 
         <!-- PERFIL -->
-        <div
-          class="profile"
-          @click="goPerfil"
-        >
-
+        <div class="profile" @click="goPerfil">
           <div class="avatar">
-
-            {{
-              usuario.nombre
-                ?.charAt(0)
-                ?.toUpperCase()
-            }}
-
+            {{ usuario.nombre?.charAt(0)?.toUpperCase() }}
           </div>
-
         </div>
-
       </div>
 
       <!-- ERROR -->
-      <div
-        v-if="errorMessage"
-        class="error-box"
-      >
+      <div v-if="errorMessage" class="error-box">
         {{ errorMessage }}
       </div>
 
       <!-- LOADING -->
-      <div
-        v-if="loading"
-        class="loading-box"
-      >
-        Cargando citas...
-      </div>
+      <div v-if="loading" class="loading-box">Cargando citas...</div>
 
       <!-- SIN CITAS -->
-      <div
-        v-if="
-          !loading &&
-          citas.length === 0
-        "
-        class="empty-box"
-      >
+      <div v-if="!loading && citas.length === 0" class="empty-box">
+        <h3>No tienes citas agendadas</h3>
 
-        <h3>
-          No tienes citas
-          agendadas
-        </h3>
-
-        <p>
-          Agenda un servicio
-          para comenzar.
-        </p>
-
+        <p>Agenda un servicio para comenzar.</p>
       </div>
 
       <!-- LISTA CITAS -->
-      <div
-        v-for="cita in citas"
-        :key="cita.id"
-        class="cita-card"
-      >
-
+      <div v-for="cita in citas" :key="cita.id" class="cita-card">
         <!-- TOP -->
         <div class="card-top">
-
-          <div class="icon-circle">
-            👤
-          </div>
+          <div class="icon-circle">👤</div>
 
           <div>
-
-            <h2>
-              Mi Cita
-            </h2>
-
+            <h2>Mi Cita</h2>
           </div>
-
         </div>
 
         <!-- INFO -->
         <div class="info-box">
-
           <div class="fecha-row">
-
             <span>
               🕒
               {{ cita.hora }}
@@ -118,158 +59,77 @@
               📅
               {{ cita.fecha }}
             </span>
-
           </div>
 
           <div class="info-item">
-
-            <strong>
-              Servicio:
-            </strong>
+            <strong> Servicio: </strong>
 
             <p>
               {{ cita.servicio }}
             </p>
-
           </div>
 
           <div class="info-item">
-
-            <strong>
-              Estilista:
-            </strong>
+            <strong> Estilista: </strong>
 
             <p>
               {{ cita.estilista }}
             </p>
-
           </div>
-
         </div>
 
         <!-- BOTONES -->
         <div class="actions">
-
           <!-- REPROGRAMAR -->
-          <button
-            class="btn-reprogramar"
-            @click="
-              abrirModalReprogramar(
-                cita
-              )
-            "
-          >
-
+          <button class="btn-reprogramar" @click="abrirModalReprogramar(cita)">
             Reprogramar
-
           </button>
 
           <!-- CANCELAR -->
-          <button
-            class="btn-cancelar"
-            @click="
-              cancelarCita(cita.id)
-            "
-          >
-
+          <button class="btn-cancelar" @click="cancelarCita(cita.id)">
             Cancelar
-
           </button>
-
         </div>
-
       </div>
-
     </main>
 
     <!-- MODAL -->
-    <div
-      v-if="mostrarModal"
-      class="modal-overlay"
-    >
-
+    <div v-if="mostrarModal" class="modal-overlay">
       <div class="modal">
+        <h2>Reprogramar cita</h2>
 
-        <h2>
-          Reprogramar cita
-        </h2>
+        <label> Nueva fecha </label>
 
-        <label>
-          Nueva fecha
-        </label>
+        <input v-model="nuevaFecha" type="date" class="input" />
 
-        <input
-          v-model="nuevaFecha"
-          type="date"
-          class="input"
-        />
+        <label> Nueva hora </label>
 
-        <label>
-          Nueva hora
-        </label>
-
-        <input
-          v-model="nuevaHora"
-          type="time"
-          class="input"
-        />
+        <input v-model="nuevaHora" type="time" class="input" />
 
         <!-- ERROR -->
-        <p
-          v-if="modalError"
-          class="modal-error"
-        >
+        <p v-if="modalError" class="modal-error">
           {{ modalError }}
         </p>
 
         <!-- BOTONES -->
         <div class="modal-actions">
-
-          <button
-            class="btn-guardar"
-            @click="guardarReprogramacion"
-          >
-
+          <button class="btn-guardar" @click="guardarReprogramacion">
             Guardar
-
           </button>
 
-          <button
-            class="btn-close"
-            @click="cerrarModal"
-          >
-
-            Cancelar
-
-          </button>
-
+          <button class="btn-close" @click="cerrarModal">Cancelar</button>
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 
-import {
+import { useRouter } from "vue-router";
 
-  ref,
-
-  onMounted
-
-} from 'vue'
-
-import {
-
-  useRouter
-
-} from 'vue-router'
-
-import axios from 'axios'
+import axios from "axios";
 
 /*
 |--------------------------------------------------------------------------
@@ -277,10 +137,9 @@ import axios from 'axios'
 |--------------------------------------------------------------------------
 */
 
-import MenuCliente from
-'../../components/MenuCliente.vue'
+import MenuCliente from "../../components/MenuCliente.vue";
 
-const router = useRouter()
+const router = useRouter();
 
 /*
 |--------------------------------------------------------------------------
@@ -288,14 +147,11 @@ const router = useRouter()
 |--------------------------------------------------------------------------
 */
 
-const API_URL =
-  'http://localhost:3000/api/cliente/citas'
+const API_URL = "http://localhost:3000/api/cliente/citas";
 
-const CANCELAR_URL =
-  'http://localhost:3000/api/cliente/citas/cancelar'
+const CANCELAR_URL = "http://localhost:3000/api/cliente/citas/cancelar";
 
-const REPROGRAMAR_URL =
-  'http://localhost:3000/api/cliente/citas/reprogramar'
+const REPROGRAMAR_URL = "http://localhost:3000/api/cliente/citas/reprogramar";
 
 /*
 |--------------------------------------------------------------------------
@@ -303,19 +159,19 @@ const REPROGRAMAR_URL =
 |--------------------------------------------------------------------------
 */
 
-const loading = ref(false)
+const loading = ref(false);
 
-const errorMessage = ref('')
+const errorMessage = ref("");
 
-const mostrarModal = ref(false)
+const mostrarModal = ref(false);
 
-const modalError = ref('')
+const modalError = ref("");
 
-const nuevaFecha = ref('')
+const nuevaFecha = ref("");
 
-const nuevaHora = ref('')
+const nuevaHora = ref("");
 
-const citaSeleccionada = ref(null)
+const citaSeleccionada = ref(null);
 
 /*
 |--------------------------------------------------------------------------
@@ -324,10 +180,8 @@ const citaSeleccionada = ref(null)
 */
 
 const usuario = ref({
-
-  nombre: 'Cliente Demo'
-
-})
+  nombre: "Cliente Demo",
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -335,7 +189,7 @@ const usuario = ref({
 |--------------------------------------------------------------------------
 */
 
-const citas = ref([])
+const citas = ref([]);
 
 /*
 |--------------------------------------------------------------------------
@@ -344,40 +198,29 @@ const citas = ref([])
 */
 
 const obtenerCitas = async () => {
+  loading.value = true;
 
-  loading.value = true
-
-  errorMessage.value = ''
+  errorMessage.value = "";
 
   try {
-
-    const token =
-      localStorage.getItem('token')
+    const token = localStorage.getItem("token");
 
     /*
       PETICION BACKEND
     */
 
-    /*
-    const response =
-      await axios.get(
-        API_URL,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`
-          }
-        }
-      )
+    const response = await axios.get(API_URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    citas.value =
-      response.data.citas
-    */
+    citas.value = response.data.citas;
 
     /*
       DEMO VISUAL
     */
-
+    /*
     citas.value = [
 
       {
@@ -423,55 +266,30 @@ const obtenerCitas = async () => {
   catch (error) {
 
     console.error(error)
-
+*/
     /*
       401
     */
 
-    if (
-      error.response?.status === 401
-    ) {
+    if (error.response?.status === 401) {
+      errorMessage.value = "Sesión expirada";
 
-      errorMessage.value =
-        'Sesión expirada'
-
-      router.push('/login')
-
-    }
-
-    /*
+      router.push("/login");
+    } else if (error.response?.status === 500) {
+      /*
       500
     */
-
-    else if (
-      error.response?.status === 500
-    ) {
-
-      errorMessage.value =
-        'Error del servidor'
-
-    }
-
-    /*
+      errorMessage.value = "Error del servidor";
+    } else {
+      /*
       GENERAL
     */
-
-    else {
-
-      errorMessage.value =
-        'No se pudieron obtener las citas'
-
+      errorMessage.value = "No se pudieron obtener las citas";
     }
-
+  } finally {
+    loading.value = false;
   }
-
-  finally {
-
-    loading.value = false
-
-  }
-
-}
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -480,65 +298,42 @@ const obtenerCitas = async () => {
 */
 
 const cancelarCita = async (id) => {
-
-  const confirmar =
-    confirm(
-      '¿Deseas cancelar esta cita?'
-    )
+  const confirmar = confirm("¿Deseas cancelar esta cita?");
 
   if (!confirmar) {
-
-    return
-
+    return;
   }
 
   try {
-
-    const token =
-      localStorage.getItem('token')
+    const token = localStorage.getItem("token");
 
     /*
       BACKEND
     */
 
-    /*
     await axios.put(
       `${CANCELAR_URL}/${id}`,
       {},
       {
         headers: {
-          Authorization:
-            `Bearer ${token}`
-        }
-      }
-    )
-    */
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
     /*
       DEMO
     */
 
-    citas.value =
-      citas.value.filter(
-        cita => cita.id !== id
-      )
+    citas.value = citas.value.filter((cita) => cita.id !== id);
 
-    alert(
-      'Cita cancelada correctamente'
-    )
+    alert("Cita cancelada correctamente");
+  } catch (error) {
+    console.error(error);
 
+    errorMessage.value = "No se pudo cancelar la cita";
   }
-
-  catch (error) {
-
-    console.error(error)
-
-    errorMessage.value =
-      'No se pudo cancelar la cita'
-
-  }
-
-}
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -547,25 +342,20 @@ const cancelarCita = async (id) => {
 */
 
 const abrirModalReprogramar = (cita) => {
+  citaSeleccionada.value = cita;
 
-  citaSeleccionada.value =
-    cita
-
-  mostrarModal.value = true
-
-}
+  mostrarModal.value = true;
+};
 
 const cerrarModal = () => {
+  mostrarModal.value = false;
 
-  mostrarModal.value = false
+  nuevaFecha.value = "";
 
-  nuevaFecha.value = ''
+  nuevaHora.value = "";
 
-  nuevaHora.value = ''
-
-  modalError.value = ''
-
-}
+  modalError.value = "";
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -573,37 +363,27 @@ const cerrarModal = () => {
 |--------------------------------------------------------------------------
 */
 
-const guardarReprogramacion =
-async () => {
-
-  modalError.value = ''
+const guardarReprogramacion = async () => {
+  modalError.value = "";
 
   /*
     VALIDACIONES
   */
 
   if (!nuevaFecha.value) {
+    modalError.value = "Selecciona una fecha";
 
-    modalError.value =
-      'Selecciona una fecha'
-
-    return
-
+    return;
   }
 
   if (!nuevaHora.value) {
+    modalError.value = "Selecciona una hora";
 
-    modalError.value =
-      'Selecciona una hora'
-
-    return
-
+    return;
   }
 
   try {
-
-    const token =
-      localStorage.getItem('token')
+    const token = localStorage.getItem("token");
 
     /*
       BACKEND
@@ -632,30 +412,19 @@ async () => {
       DEMO VISUAL
     */
 
-    citaSeleccionada.value.fecha =
-      nuevaFecha.value
+    citaSeleccionada.value.fecha = nuevaFecha.value;
 
-    citaSeleccionada.value.hora =
-      nuevaHora.value
+    citaSeleccionada.value.hora = nuevaHora.value;
 
-    cerrarModal()
+    cerrarModal();
 
-    alert(
-      'Cita reprogramada correctamente'
-    )
+    alert("Cita reprogramada correctamente");
+  } catch (error) {
+    console.error(error);
 
+    modalError.value = "No se pudo reprogramar la cita";
   }
-
-  catch (error) {
-
-    console.error(error)
-
-    modalError.value =
-      'No se pudo reprogramar la cita'
-
-  }
-
-}
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -664,10 +433,8 @@ async () => {
 */
 
 const goPerfil = () => {
-
-  router.push('/cliente/perfil')
-
-}
+  router.push("/cliente/perfil");
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -676,78 +443,53 @@ const goPerfil = () => {
 */
 
 onMounted(() => {
-
   /*
     DEMO LOGIN
   */
 
-  if (!localStorage.getItem('token')) {
+  if (!localStorage.getItem("token")) {
+    localStorage.setItem("token", "demo-token");
+
+    localStorage.setItem("rol", "cliente");
 
     localStorage.setItem(
-      'token',
-      'demo-token'
-    )
-
-    localStorage.setItem(
-      'rol',
-      'cliente'
-    )
-
-    localStorage.setItem(
-      'usuario',
+      "usuario",
       JSON.stringify({
-
-        nombre:
-          'Cliente Demo'
-
-      })
-
-    )
-
+        nombre: "Cliente Demo",
+      }),
+    );
   }
 
-  const usuarioGuardado =
-    localStorage.getItem('usuario')
+  const usuarioGuardado = localStorage.getItem("usuario");
 
   if (usuarioGuardado) {
-
-    usuario.value =
-      JSON.parse(usuarioGuardado)
-
+    usuario.value = JSON.parse(usuarioGuardado);
   }
 
-  obtenerCitas()
-
-})
-
+  obtenerCitas();
+});
 </script>
 
 <style scoped>
-
 .citas-page {
-
   display: flex;
 
   min-height: 100vh;
 
   background: #f5f5f7;
-
 }
 
 /* CONTENT */
 
 .content {
-
   flex: 1;
 
   padding: 30px;
-
 }
 
 /* HEADER */
 
 .header {
-
   display: flex;
 
   justify-content: space-between;
@@ -755,36 +497,26 @@ onMounted(() => {
   align-items: center;
 
   margin-bottom: 30px;
-
 }
 
 .subtitle {
-
   color: #777;
-
 }
 
 /* PERFIL */
 
 .profile {
-
   cursor: pointer;
-
 }
 
 .avatar {
-
   width: 55px;
 
   height: 55px;
 
   border-radius: 50%;
 
-  background: linear-gradient(
-    to right,
-    #7b2ff7,
-    #f107a3
-  );
+  background: linear-gradient(to right, #7b2ff7, #f107a3);
 
   color: white;
 
@@ -797,13 +529,11 @@ onMounted(() => {
   font-weight: bold;
 
   font-size: 22px;
-
 }
 
 /* CARD */
 
 .cita-card {
-
   background: white;
 
   padding: 25px;
@@ -812,14 +542,10 @@ onMounted(() => {
 
   margin-bottom: 25px;
 
-  box-shadow:
-    0 5px 15px
-    rgba(0,0,0,0.08);
-
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
 
 .card-top {
-
   display: flex;
 
   align-items: center;
@@ -827,11 +553,9 @@ onMounted(() => {
   gap: 15px;
 
   margin-bottom: 20px;
-
 }
 
 .icon-circle {
-
   width: 50px;
 
   height: 50px;
@@ -847,23 +571,19 @@ onMounted(() => {
   justify-content: center;
 
   font-size: 24px;
-
 }
 
 /* INFO */
 
 .info-box {
-
   background: #f9fafb;
 
   padding: 20px;
 
   border-radius: 15px;
-
 }
 
 .fecha-row {
-
   display: flex;
 
   gap: 20px;
@@ -871,27 +591,21 @@ onMounted(() => {
   margin-bottom: 20px;
 
   color: #666;
-
 }
 
 .info-item {
-
   margin-bottom: 15px;
-
 }
 
 .info-item p {
-
   margin-top: 5px;
 
   color: #444;
-
 }
 
 /* BOTONES */
 
 .actions {
-
   margin-top: 20px;
 
   display: flex;
@@ -899,11 +613,9 @@ onMounted(() => {
   justify-content: flex-end;
 
   gap: 12px;
-
 }
 
 .btn-reprogramar {
-
   border: none;
 
   padding: 12px 18px;
@@ -916,16 +628,10 @@ onMounted(() => {
 
   font-weight: bold;
 
-  background: linear-gradient(
-    to right,
-    #7b2ff7,
-    #f107a3
-  );
-
+  background: linear-gradient(to right, #7b2ff7, #f107a3);
 }
 
 .btn-cancelar {
-
   border: 1px solid #ddd;
 
   background: white;
@@ -935,29 +641,25 @@ onMounted(() => {
   border-radius: 12px;
 
   cursor: pointer;
-
 }
 
 /* MODAL */
 
 .modal-overlay {
-
   position: fixed;
 
   inset: 0;
 
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
 
   display: flex;
 
   align-items: center;
 
   justify-content: center;
-
 }
 
 .modal {
-
   background: white;
 
   padding: 30px;
@@ -965,11 +667,9 @@ onMounted(() => {
   border-radius: 20px;
 
   width: 350px;
-
 }
 
 .input {
-
   width: 100%;
 
   padding: 12px;
@@ -981,41 +681,31 @@ onMounted(() => {
   border-radius: 10px;
 
   border: 1px solid #ddd;
-
 }
 
 .modal-actions {
-
   display: flex;
 
   justify-content: flex-end;
 
   gap: 10px;
-
 }
 
 .btn-guardar {
-
   border: none;
 
   padding: 10px 15px;
 
   border-radius: 10px;
 
-  background: linear-gradient(
-    to right,
-    #7b2ff7,
-    #f107a3
-  );
+  background: linear-gradient(to right, #7b2ff7, #f107a3);
 
   color: white;
 
   cursor: pointer;
-
 }
 
 .btn-close {
-
   border: none;
 
   padding: 10px 15px;
@@ -1025,13 +715,11 @@ onMounted(() => {
   background: #eee;
 
   cursor: pointer;
-
 }
 
 /* ERROR */
 
 .error-box {
-
   background: #fee2e2;
 
   color: #dc2626;
@@ -1041,21 +729,16 @@ onMounted(() => {
   border-radius: 12px;
 
   margin-bottom: 20px;
-
 }
 
 .modal-error {
-
   color: #dc2626;
 
   margin-bottom: 15px;
-
 }
 
 .loading-box,
-
 .empty-box {
-
   background: white;
 
   padding: 25px;
@@ -1065,34 +748,25 @@ onMounted(() => {
   text-align: center;
 
   margin-bottom: 20px;
-
 }
 
 /* RESPONSIVE */
 
 @media (max-width: 768px) {
-
   .content {
-
     padding: 20px;
-
   }
 
   .header {
-
     flex-direction: column;
 
     align-items: flex-start;
 
     gap: 15px;
-
   }
 
   .actions {
-
     flex-direction: column;
-
   }
-
 }
 </style>
