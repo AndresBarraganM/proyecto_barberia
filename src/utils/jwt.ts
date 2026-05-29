@@ -4,7 +4,7 @@ import { JwtPayload, JwtInput } from '../types'
 
 export const signToken = (payload: JwtInput): string => {
   const exp = Math.floor(Date.now() / 1000) + Number(env.JWT_EXPIRES_IN)
-
+  console.log(exp)
   return jwt.sign({ ...payload, exp }, env.JWT_SECRET)
 }
 

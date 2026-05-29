@@ -79,7 +79,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     await TokenModel.create({ 
       id_usuario: user.Id_usuario, 
       token: hashedToken, 
-      expired_at: new Date(Math.floor(Date.now() / 1000) + 60 * 60 * 24), 
+      expired_at: new Date((Math.floor(Date.now() / 1000) + 60 * 60 * 24) * 1000), 
       user_agent: req.get('User-Agent') || '', 
       ip_adress: req.ip || '' 
     })
@@ -102,12 +102,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   })
 }
 
-// ── GET /api/auth/me ──────────────────────────────────────────────────────────
-export const me = async (req: AuthRequest, res: Response): Promise<void> => {
-  const user = await UserModel.findById(req.user!.sub)
-  if (!user) {
-    sendError(res, 'Usuario no encontrado', 404)
-    return
-  }
-  sendSuccess(res, user, 'Perfil obtenido')
-}
+// El front la utiliza en api/cliente/me
+// // ── GET /api/auth/me ──────────────────────────────────────────────────────────
+// export const me = async (req: AuthRequest, res: Response): Promise<void> => {
+//   const user = await UserModel.findById(req.user!.sub)
+//   if (!user) {
+//     sendError(res, 'Usuario no encontrado', 404)
+//     return
+//   }
+//   sendSuccess(res, user, 'Perfil obtenido')
+// }

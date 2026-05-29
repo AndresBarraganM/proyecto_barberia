@@ -5,16 +5,18 @@ export interface CreateUserData {
   Nombre: string
   Apellido: string
   Email: string
+  telefono?:string
   Password: string
   Rol?: string
 }
 
 export interface UpdateUserData {
   Nombre?: string
-  Apellido?: string
   Email?: string
   telefono?: string
+  Password?: string
 }
+
 
 export const UserModel = {
   findByEmail: (email: string) =>
@@ -24,7 +26,7 @@ export const UserModel = {
   findById: (id: string) =>
     prisma.usuario.findUnique({
       where: { Id_usuario: id },
-      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true, Rol: true, Fecha_de_registro: true },
+      select: { Id_usuario: true, Nombre: true, Apellido: true, Email: true,telefono: true, Rol: true, Fecha_de_registro: true },
     }),
 
   findAll: () =>
@@ -46,8 +48,12 @@ export const UserModel = {
   return rol?.id_rol ?? null
 },
 
-  update: (id: string, data: UpdateUserData) =>
-    (() => { throw new Error('Not implemented') })(),
+  updateById: async (id: string, data: UpdateUserData) =>
+  prisma.usuario.update({
+    where: { Id_usuario: id },
+    data,
+    select: { Nombre: true, Email: true, telefono: true },
+  }),
 
   delete: (id: string) =>
     (() => { throw new Error('Not implemented') })(),

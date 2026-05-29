@@ -29,8 +29,8 @@ export const TokenModel = {
       data: { revoked_at: Math.floor(Date.now() / 1000) },
     }),
  */
-  findValidToken: (token_hash: string) =>
+  findValidToken: (token: string) =>
     prisma.token.findFirst({
-      where: { token_hash, revoked_at: null },
+      where: { token, revoked_at: null },
     }),
 }
