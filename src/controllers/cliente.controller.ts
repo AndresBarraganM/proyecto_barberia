@@ -1,6 +1,7 @@
 import { Response } from 'express'
 import { UserModel } from '../models/user.model'
 import { ServicioModel } from '../models/servicio.model'
+import { CitaModel } from '../models/cita.model'
 import { AuthRequest } from '../types'
 import { sendSuccess, sendError } from '../utils/response'
 
@@ -106,6 +107,34 @@ export const updateMe = async (req: AuthRequest, res: Response): Promise<void> =
         email: updated.Email,
         telefono: updated.telefono ?? '',
       }
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error del servidor' })
+  }
+}
+// --GET api/cliente/historial
+export const getHistorial = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const citas = await CitaModel.findHistorialByCliente(req.user!.sub)
+
+    if (!citas.length) {
+      res.status(404).json({ message: 'No se encontró historial' })
+      return
+    }
+
+    res.status(200).json({
+      historial: citas.map(c => ({
+        id: c.Id_cita,
+        servicio: c.Servicio?.Nombre_Servicio ?? '',
+        fecha: new Date(c.Fecha_cita!).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }),
+        hora: c.Hora_inicio ? new Date(c.Hora_inicio).toISOString().substring(11, 16) : '',
+        estilista: c.Usuario_Citas_Id_estilistaToUsuario
+          ? `${c.Usuario_Citas_Id_estilistaToUsuario.Nombre} ${c.Usuario_Citas_Id_estilistaToUsuario.Apellido}`
+          : '',
+        precio: Number(c.Servicio?.Precio ?? 0),
+        detalles: c.Servicio?.Descripcion ?? ''
+      }))
     })
   } catch (error) {
     console.error(error)
