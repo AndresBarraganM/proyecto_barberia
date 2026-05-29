@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import authRoutes from './auth.routes'
+import recepcionistaRoutes from './recepcionista.routes'
 import userRoutes from './user.routes'
 import clienteRoutes from './cliente.routes'
 
@@ -13,5 +14,6 @@ router.get('/health', (_req, res) => {
 router.use('/auth', authRoutes)
 router.use('/users', userRoutes)
 router.use('/cliente', clienteRoutes)
+router.use('/recepcionista', recepcionistaRoutes)
 
 export default router

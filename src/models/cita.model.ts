@@ -40,9 +40,17 @@ export const CitaModel = {
       },
       orderBy: { Fecha_cita: 'desc' }
     }),
-    findById: (id_cita: number, id_cliente: string) =>
+  findById: (id_cita: number, id_cliente: string) =>
     prisma.citas.findFirst({
       where: { Id_cita: id_cita, Id_cliente: id_cliente }
+    }),
+  findByFecha: (fecha: string) =>
+    prisma.citas.findMany({
+      where: {
+        Fecha_cita: new Date(fecha),
+        Estado_cita: 1 // Pendiente
+      },
+      select: { Hora_inicio: true }
     }),
 
   cancelar: (id_cita: number) =>

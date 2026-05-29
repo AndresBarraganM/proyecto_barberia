@@ -1,109 +1,57 @@
 <template>
-
   <div class="servicios-container">
-
     <!-- MENU -->
     <MenuRecepcionista />
 
     <!-- CONTENIDO -->
     <main class="content">
-
       <!-- HEADER -->
       <div class="header">
-
         <div>
+          <h1>Servicios Disponibles</h1>
 
-          <h1>
-            Servicios Disponibles
-          </h1>
-
-          <p class="subtitle">
-            Administra y agenda servicios para clientes
-          </p>
-
+          <p class="subtitle">Administra y agenda servicios para clientes</p>
         </div>
 
         <!-- PERFIL -->
-        <div
-          class="profile"
-          @click="goPerfil"
-        >
-
+        <div class="profile" @click="goPerfil">
           <div class="avatar">
-
-            {{
-              usuario.nombre
-                ?.charAt(0)
-                ?.toUpperCase()
-            }}
-
+            {{ usuario.nombre?.charAt(0)?.toUpperCase() }}
           </div>
-
         </div>
-
       </div>
 
       <!-- ERROR -->
-      <div
-        v-if="errorMessage"
-        class="error-box"
-      >
+      <div v-if="errorMessage" class="error-box">
         {{ errorMessage }}
       </div>
 
       <!-- LOADING -->
-      <div
-        v-if="loading"
-        class="loading-box"
-      >
-        Cargando servicios...
-      </div>
+      <div v-if="loading" class="loading-box">Cargando servicios...</div>
 
       <!-- VACIO -->
-      <div
-        v-else-if="servicios.length === 0"
-        class="empty-box"
-      >
+      <div v-else-if="servicios.length === 0" class="empty-box">
+        <div class="empty-icon">✂️</div>
 
-        <div class="empty-icon">
-          ✂️
-        </div>
-
-        <h3>
-          No hay servicios disponibles
-        </h3>
-
+        <h3>No hay servicios disponibles</h3>
       </div>
 
       <!-- SERVICIOS -->
-      <div
-        v-else
-        class="services-grid"
-      >
-
+      <div v-else class="services-grid">
         <div
           v-for="servicio in servicios"
           :key="servicio.id"
           class="service-card"
         >
-
-          <img
-            :src="servicio.imagen"
-            class="service-image"
-          />
+          <img :src="servicio.imagen" class="service-image" />
 
           <div class="service-body">
-
             <div class="service-top">
-
               <h2>
                 {{ servicio.nombre }}
               </h2>
 
-              <span class="price">
-                ${{ servicio.precio }}
-              </span>
-
+              <span class="price"> ${{ servicio.precio }} </span>
             </div>
 
             <p class="description">
@@ -115,7 +63,6 @@
               v-if="servicioSeleccionado === servicio.id"
               class="details-box"
             >
-
               <div class="detail-item">
                 <span class="label">Duración:</span>
                 <span>{{ servicio.duracion }}</span>
@@ -125,53 +72,37 @@
                 <span class="label">Incluye:</span>
                 <span>{{ servicio.incluye }}</span>
               </div>
-
             </div>
 
             <!-- BOTONES -->
             <div class="buttons">
-
-              <button
-                class="btn-details"
-                @click="toggleDetalles(servicio.id)"
-              >
+              <button class="btn-details" @click="toggleDetalles(servicio.id)">
                 {{
                   servicioSeleccionado === servicio.id
-                    ? 'Ocultar detalles'
-                    : 'Ver detalles'
+                    ? "Ocultar detalles"
+                    : "Ver detalles"
                 }}
               </button>
 
-              <button
-                class="btn-book"
-                @click="agendarServicio(servicio)"
-              >
+              <button class="btn-book" @click="agendarServicio(servicio)">
                 Agendar cita
               </button>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </main>
-
   </div>
-
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
+import MenuRecepcionista from "../../components/MenuRecepcionista.vue";
 
-import MenuRecepcionista from '../../components/MenuRecepcionista.vue'
-
-const router = useRouter()
+const router = useRouter();
 
 /*
 |--------------------------------------------------------------------------
@@ -179,15 +110,15 @@ const router = useRouter()
 |--------------------------------------------------------------------------
 */
 
-const loading = ref(false)
-const errorMessage = ref('')
-const servicioSeleccionado = ref(null)
+const loading = ref(false);
+const errorMessage = ref("");
+const servicioSeleccionado = ref(null);
 
 const usuario = ref({
-  nombre: ''
-})
+  nombre: "",
+});
 
-const servicios = ref([])
+const servicios = ref([]);
 
 /*
 |--------------------------------------------------------------------------
@@ -195,8 +126,7 @@ const servicios = ref([])
 |--------------------------------------------------------------------------
 */
 
-const API_URL =
-  'http://localhost:3000/api/recepcionista/servicios'
+const API_URL = "http://localhost:3000/api/recepcionista/servicios";
 
 /*
 |--------------------------------------------------------------------------
@@ -205,8 +135,8 @@ const API_URL =
 */
 
 const goPerfil = () => {
-  router.push('/recepcionista/perfil')
-}
+  router.push("/recepcionista/perfil");
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -215,13 +145,8 @@ const goPerfil = () => {
 */
 
 const toggleDetalles = (id) => {
-
-  servicioSeleccionado.value =
-    servicioSeleccionado.value === id
-      ? null
-      : id
-
-}
+  servicioSeleccionado.value = servicioSeleccionado.value === id ? null : id;
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -230,15 +155,10 @@ const toggleDetalles = (id) => {
 */
 
 const agendarServicio = (servicio) => {
+  localStorage.setItem("servicioSeleccionado", JSON.stringify(servicio));
 
-  localStorage.setItem(
-    'servicioSeleccionado',
-    JSON.stringify(servicio)
-  )
-
-  router.push('/recepcionista/agendar')
-
-}
+  router.push("/recepcionista/agendar");
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -247,17 +167,15 @@ const agendarServicio = (servicio) => {
 */
 
 const obtenerServicios = async () => {
-
-  loading.value = true
-  errorMessage.value = ''
+  loading.value = true;
+  errorMessage.value = "";
 
   try {
-
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
 
     if (!token) {
-      logout()
-      return
+      logout();
+      return;
     }
 
     /*
@@ -266,21 +184,19 @@ const obtenerServicios = async () => {
     |--------------------------------------------------------------------------
     */
 
-    /*
     const response = await axios.get(API_URL, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    servicios.value = response.data.servicios
-    */
+    servicios.value = response.data.servicios;
 
     /*
     |--------------------------------------------------------------------------
     | MOCK DATA (HASTA CONEXIÓN BACKEND)
     |--------------------------------------------------------------------------
-    */
+
 
     servicios.value = [
       {
@@ -310,35 +226,24 @@ const obtenerServicios = async () => {
         incluye: 'Masaje capilar y productos premium',
         imagen: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1200'
       }
-    ]
-
-  }
-
-  catch (error) {
-
-    console.error(error)
+    ]*/
+  } catch (error) {
+    console.error(error);
 
     if (error.response?.status === 401) {
-      errorMessage.value = 'Sesión inválida'
-      logout()
+      errorMessage.value = "Sesión inválida";
+      logout();
+    } else if (error.response?.status === 404) {
+      errorMessage.value = "No se encontraron servicios";
+    } else if (error.response?.status === 500) {
+      errorMessage.value = "Error del servidor";
+    } else {
+      errorMessage.value = "No se pudieron cargar los servicios";
     }
-    else if (error.response?.status === 404) {
-      errorMessage.value = 'No se encontraron servicios'
-    }
-    else if (error.response?.status === 500) {
-      errorMessage.value = 'Error del servidor'
-    }
-    else {
-      errorMessage.value = 'No se pudieron cargar los servicios'
-    }
-
+  } finally {
+    loading.value = false;
   }
-
-  finally {
-    loading.value = false
-  }
-
-}
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -347,14 +252,12 @@ const obtenerServicios = async () => {
 */
 
 const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("rol");
+  localStorage.removeItem("usuario");
 
-  localStorage.removeItem('token')
-  localStorage.removeItem('rol')
-  localStorage.removeItem('usuario')
-
-  router.push('/login')
-
-}
+  router.push("/login");
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -363,35 +266,30 @@ const logout = () => {
 */
 
 onMounted(() => {
-
-  const token = localStorage.getItem('token')
-  const rol = localStorage.getItem('rol')
+  const token = localStorage.getItem("token");
+  const rol = localStorage.getItem("rol");
 
   if (!token) {
-    router.push('/login')
-    return
+    router.push("/login");
+    return;
   }
 
-  if (rol !== 'recepcionista') {
-    router.push('/login')
-    return
+  if (rol !== "recepcionista") {
+    router.push("/login");
+    return;
   }
 
-  const usuarioGuardado =
-    localStorage.getItem('usuario')
+  const usuarioGuardado = localStorage.getItem("usuario");
 
   if (usuarioGuardado) {
-    usuario.value = JSON.parse(usuarioGuardado)
+    usuario.value = JSON.parse(usuarioGuardado);
   }
 
-  obtenerServicios()
-
-})
-
+  obtenerServicios();
+});
 </script>
 
 <style scoped>
-
 /*
 |--------------------------------------------------------------------------
 | LAYOUT
@@ -512,13 +410,13 @@ onMounted(() => {
   background: white;
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
 }
 
 .service-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .service-image {
@@ -613,7 +511,6 @@ onMounted(() => {
 */
 
 @media (max-width: 768px) {
-
   .content {
     padding: 20px;
   }
@@ -627,7 +524,5 @@ onMounted(() => {
   .buttons {
     flex-direction: column;
   }
-
 }
-
 </style>
